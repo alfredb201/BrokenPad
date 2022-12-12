@@ -19,10 +19,7 @@ var sky: SKSpriteNode!
 var HUD: SKSpriteNode!
 
 
-let treeTexture = SKTexture(imageNamed: "Tree")
-let cloudTexture = SKTexture(imageNamed: "Cloud")
-let cloudsTexture = SKTexture(imageNamed: "Clouds")
-let groundTexture = SKTexture(imageNamed: "GameGround")
+
 
 var groundHeight: CGFloat = 0.0
 let numberOfClouds = Int(random(min: 7, max: 12))
@@ -50,8 +47,10 @@ func createVillage(gameScene: GameScene) -> SKSpriteNode{
     return village
 }
 
-func createGround(groundTexture: SKTexture) -> [SKSpriteNode]{
+func createGround() -> [SKSpriteNode]{
+    let groundTexture = SKTexture(imageNamed: "GameGround")
     for i in 0 ... 3 {
+    
         let ground = SKSpriteNode(texture: groundTexture)
         ground.zPosition = 0
         ground.position = CGPoint(x: (ground.size.width / 2 + (ground.size.width * CGFloat(i))), y: groundTexture.size().height / 2)
@@ -64,7 +63,8 @@ func createGround(groundTexture: SKTexture) -> [SKSpriteNode]{
     return groundElements
 }
 
-func startGround(groundTexture: SKTexture) {
+func startGround() {
+    let groundTexture = SKTexture(imageNamed: "GameGround")
     for groundElement in groundElements {
         let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
         let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
@@ -73,6 +73,12 @@ func startGround(groundTexture: SKTexture) {
         
         groundElement.run(moveForever)
     
+    }
+}
+
+func stopGround() {
+    for groundElement in groundElements {
+        groundElement.removeAllActions()
     }
 }
     
@@ -97,6 +103,8 @@ func createClouds(gameScene: GameScene) -> [SKSpriteNode]{
 }
 
 func createSingleCloud(gameScene: GameScene, firstClouds: Bool) -> SKSpriteNode{
+    let cloudTexture = SKTexture(imageNamed: "Cloud")
+    let cloudsTexture = SKTexture(imageNamed: "Clouds")
     let cloud = SKSpriteNode(texture: random(min: 0, max: 10) < 6.0 ? cloudTexture : cloudsTexture)
     cloud.zPosition = -40
     cloud.yScale = random(min: 1.0, max: 3.0)
@@ -123,6 +131,7 @@ func createTrees(gameScene: GameScene) -> [SKSpriteNode]{
 }
 
 func createSingleTree(gameScene: GameScene, iterator: Int?, hasStarted: Bool) -> SKSpriteNode{
+    let treeTexture = SKTexture(imageNamed: "Tree")
     let tree = SKSpriteNode(texture: treeTexture)
     if(!hasStarted){
         tree.setScale(3.0)
@@ -150,7 +159,6 @@ func createHUD(gameScene: GameScene) -> SKSpriteNode{
     
     return HUD
 }
-
 
 func addHills(gameScene: GameScene) -> SKSpriteNode{
     let hills = SKSpriteNode(imageNamed: "Hills")

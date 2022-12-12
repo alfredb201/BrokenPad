@@ -53,10 +53,10 @@
 		934CDBC629478A9F00E56425 /* GoodFiles */ = {
 			isa = PBXGroup;
 			children = (
+				93F4405529436AF600191440 /* GameScene.swift */,
 				934CDBC42947896B00E56425 /* Arrow.swift */,
 				934CDBC229477CF300E56425 /* BackgroundElements.swift */,
 				934CDBC0294771EA00E56425 /* Enemy.swift */,
-				93F4405529436AF600191440 /* GameScene.swift */,
 				934CDBBE29476D6900E56425 /* Player.swift */,
 			);
 			path = GoodFiles;

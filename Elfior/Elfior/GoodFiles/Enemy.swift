@@ -41,9 +41,9 @@ func addShieldedOgre(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNod
     shieldedOgre.setScale(0.5)
     shieldedOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: shieldedOgre.size.width / 2, height: shieldedOgre.size.height / 2))
     shieldedOgre.physicsBody?.isDynamic = false
-    shieldedOgre.physicsBody?.categoryBitMask = PhysicsCategory.Enemy
-    shieldedOgre.physicsBody?.contactTestBitMask = PhysicsCategory.Arrow | PhysicsCategory.Player
-    shieldedOgre.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+    shieldedOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
+    shieldedOgre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
+    shieldedOgre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         
         
         let randomDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
@@ -62,9 +62,9 @@ func addArmoredOgre(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode
     armoredOgre.setScale(0.5)
     armoredOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: armoredOgre.size.width / 2, height: armoredOgre.size.height / 2))
     armoredOgre.physicsBody?.isDynamic = false
-    armoredOgre.physicsBody?.categoryBitMask = PhysicsCategory.Enemy
-    armoredOgre.physicsBody?.contactTestBitMask = PhysicsCategory.Arrow | PhysicsCategory.Player
-    armoredOgre.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+    armoredOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
+    armoredOgre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
+    armoredOgre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         
         
         let randomDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))

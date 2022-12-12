@@ -35,7 +35,7 @@ func random(min: CGFloat, max: CGFloat) -> CGFloat {
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-
+    
     
     var actualNumberOfClouds = numberOfClouds {
         didSet{
@@ -73,12 +73,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         setStartLabel()
         createBackground()
-
+        
         let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender:)))
         upSwipe.direction = .up
         view.addGestureRecognizer(upSwipe)
     }
-
+    
     @objc func handleSwipe(sender: UISwipeGestureRecognizer) {
         if sender.state == .ended {
             switch sender.direction {
@@ -98,22 +98,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBackground(){
-        for ground in createGround(groundTexture: groundTexture) {
-            addChild(ground)
-        }
-        addChild(createSky(gameScene: self))
-        addChild(createVillage(gameScene: self))
-        addChild(createPlayer(gameScene: self, groundHeight: groundHeight))
-        addChild(createFirepit())
-        
-        for cloud in createClouds(gameScene: self) {
-            addChild(cloud)
-        }
-        for tree in createTrees(gameScene: self) {
-            addChild(tree)
-        }
+            for ground in createGround() {
+                addChild(ground)
+            }
+            addChild(createSky(gameScene: self))
+            addChild(createVillage(gameScene: self))
+            addChild(createPlayer(gameScene: self, groundHeight: groundHeight))
+            addChild(createFirepit())
+            
+            for cloud in createClouds(gameScene: self) {
+                addChild(cloud)
+            }
+            for tree in createTrees(gameScene: self) {
+                addChild(tree)
+            }
     }
-
+    
     
     func setStartLabel(){
         startLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
@@ -127,7 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func startGame() {
         hasStarted = true
         movePlayer(groundHeight: groundHeight)
-        startGround(groundTexture: groundTexture)
+        startGround()
         createScore()
         
         for node in backgroundElements {
@@ -160,17 +160,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }])
         
         run(SKAction.sequence([SKAction.wait(forDuration: 8),SKAction.group([SKAction.repeatForever(enemySpawn), SKAction.repeatForever(treeSpawn), SKAction.repeatForever(hillsSpawn)])]))
-
+        
     }
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
         scoreLabel.fontSize = 24
-
+        
         scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
         scoreLabel.text = "SCORE: 0"
         scoreLabel.fontColor = UIColor.black
-
+        
         addChild(scoreLabel)
     }
     
@@ -180,10 +180,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameState = .playing
             startLabel.removeFromParent()
             startGame()
-
+            
         case .playing:
             addChild(shootArrow(gameScene: self, touches))
-           
+            
         case .dead:
             if let scene = GameScene(fileNamed: "GameScene") {
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
@@ -216,23 +216,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 playerGotHit(enemy: secondBody.node as! SKSpriteNode)
             }
         }
-<<<<<<< Updated upstream
+        
         else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
                 (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0 )) {
-//            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
-//            if let scene = GameScene(fileNamed: "GameScene") {
-//                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-//                view?.presentScene(scene, transition: transition)
-//            }
-=======
-        else if((firstBody.categoryBitMask & PhysicsCategory.Player != 0) &&
-                (secondBody.categoryBitMask & PhysicsCategory.Hole != 0 )) {
-            firstBody.collisionBitMask = PhysicsCategory.Nobody
+            //            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
+            self.removeAllChildren()
+            stopGround()
             if let scene = GameScene(fileNamed: "GameScene") {
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
                 view?.presentScene(scene, transition: transition)
             }
->>>>>>> Stashed changes
         }
     }
     
@@ -241,6 +234,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy.removeFromParent()
         playerLives -= 1
         if(playerLives < 1) {
+            self.removeAllChildren()
+            stopGround()
             if let scene = GameScene(fileNamed: "GameScene") {
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
                 view?.presentScene(scene, transition: transition)
@@ -248,16 +243,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         isInvuln = true
     }
-   
+    
     
     override func update(_ currentTime: TimeInterval) {
         if(isInvuln == true){
             invulnTime += 0.1
         }
-
+        
         if (invulnTime > 10) {
             isInvuln = false
             invulnTime = 0
         }
     }
 }
+
+
