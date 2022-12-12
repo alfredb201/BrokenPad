@@ -90,9 +90,9 @@
 		93F4404E29436AF600191440 /* Elfior */ = {
 			isa = PBXGroup;
 			children = (
-				934CDBC629478A9F00E56425 /* GoodFiles */,
 				93F4404F29436AF600191440 /* AppDelegate.swift */,
 				93F4405729436AF600191440 /* GameViewController.swift */,
+				934CDBC629478A9F00E56425 /* GoodFiles */,
 				93F4405929436AF600191440 /* Main.storyboard */,
 				93F4405C29436AF600191440 /* Assets.xcassets */,
 				93F4405E29436AF600191440 /* LaunchScreen.storyboard */,

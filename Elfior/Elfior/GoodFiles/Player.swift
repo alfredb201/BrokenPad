@@ -18,9 +18,9 @@ func createPlayer(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode {
         elfior.position = CGPoint(x: gameScene.frame.width / 3 - 30, y: groundHeight / 2.7 )
         
         elfior.physicsBody = SKPhysicsBody(texture: playerTexture, size: CGSize(width: playerTexture.size().width / 2, height: playerTexture.size().height / 2))
-        elfior.physicsBody?.categoryBitMask = PhysicsCategory.Player
-        elfior.physicsBody?.contactTestBitMask = PhysicsCategory.Enemy
-        elfior.physicsBody?.collisionBitMask = PhysicsCategory.Ground
+    elfior.physicsBody?.categoryBitMask = PhysicsCategory.player.rawValue
+    elfior.physicsBody?.contactTestBitMask = PhysicsCategory.enemy.rawValue
+    elfior.physicsBody?.collisionBitMask = PhysicsCategory.ground.rawValue
         elfior.physicsBody?.allowsRotation = false
         elfior.physicsBody?.isDynamic = false
 

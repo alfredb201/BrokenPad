@@ -18,9 +18,9 @@ func addEnemy(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode{
         
         ogre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ogre.size.width / 2, height: ogre.size.height / 2))
         ogre.physicsBody?.isDynamic = false
-        ogre.physicsBody?.categoryBitMask = PhysicsCategory.Enemy
-        ogre.physicsBody?.contactTestBitMask = PhysicsCategory.Arrow | PhysicsCategory.Player
-        ogre.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+    ogre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
+    ogre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
+    ogre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         
         
         let randomDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))

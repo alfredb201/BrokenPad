@@ -75,9 +75,9 @@ class TowerDefenseCode: SKScene, SKPhysicsContactDelegate {
         
         enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
         enemy.physicsBody?.isDynamic = true
-        enemy.physicsBody?.categoryBitMask = PhysicsCategory.Enemy
-        enemy.physicsBody?.contactTestBitMask = PhysicsCategory.Arrow
-        enemy.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+        enemy.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
+        enemy.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue
+        enemy.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         
         let randomDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
 
@@ -106,9 +106,9 @@ class TowerDefenseCode: SKScene, SKPhysicsContactDelegate {
         
         arrow.physicsBody = SKPhysicsBody(circleOfRadius: arrow.size.width/2)
         arrow.physicsBody?.isDynamic = true
-        arrow.physicsBody?.categoryBitMask = PhysicsCategory.Arrow
-        arrow.physicsBody?.contactTestBitMask = PhysicsCategory.Enemy
-        arrow.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+        arrow.physicsBody?.categoryBitMask = PhysicsCategory.arrow.rawValue
+        arrow.physicsBody?.contactTestBitMask = PhysicsCategory.enemy.rawValue
+        arrow.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         arrow.physicsBody?.usesPreciseCollisionDetection = true
         
         let direction = distance.normalized()
@@ -145,8 +145,8 @@ class TowerDefenseCode: SKScene, SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         
-        if((firstBody.categoryBitMask & PhysicsCategory.Enemy != 0) &&
-           (secondBody.categoryBitMask & PhysicsCategory.Arrow != 0 )) {
+        if((firstBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0) &&
+           (secondBody.categoryBitMask & PhysicsCategory.arrow.rawValue != 0 )) {
             arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)
         }
     }

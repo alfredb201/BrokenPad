@@ -19,9 +19,9 @@ func shootArrow(gameScene:GameScene, _ touches: Set<UITouch>) -> SKSpriteNode{
     
     arrow.physicsBody = SKPhysicsBody(circleOfRadius: arrow.size.width/4)
     arrow.physicsBody?.isDynamic = true
-    arrow.physicsBody?.categoryBitMask = PhysicsCategory.Arrow
-    arrow.physicsBody?.contactTestBitMask = PhysicsCategory.Enemy
-    arrow.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+    arrow.physicsBody?.categoryBitMask = PhysicsCategory.arrow.rawValue
+    arrow.physicsBody?.contactTestBitMask = PhysicsCategory.enemy.rawValue
+    arrow.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
     arrow.physicsBody?.usesPreciseCollisionDetection = true
     let direction = distance.normalized()
     let maxDistance = direction * 800

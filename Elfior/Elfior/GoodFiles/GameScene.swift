@@ -7,14 +7,16 @@
 
 import SpriteKit
 
-struct PhysicsCategory {
-    static let Nobody :UInt32 = 0
-    static let All :UInt32 = UInt32.max
-    static let Ground :UInt32 = 0b1
-    static let Enemy :UInt32 = 0b10
-    static let Hole :UInt32 = 0b100
-    static let Arrow :UInt32 = 0b1000
-    static let Player :UInt32 = 0b10000
+/* this struct contains the id of the hitboxes and it will be used to
+ handle the different cases of collision with entities */
+
+enum PhysicsCategory: UInt32 {
+    case nothing = 0b0 // 0
+    case ground = 0b1 // 1
+    case enemy = 0b10 // 2
+    case pit = 0b100 // 4
+    case arrow = 0b1000 // 8
+    case player = 0b10000 // 16
 }
 
 enum GameState {
@@ -178,19 +180,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         
-        if((firstBody.categoryBitMask & PhysicsCategory.Arrow != 0) &&
-           (secondBody.categoryBitMask & PhysicsCategory.Enemy != 0 )) {
+        if((firstBody.categoryBitMask & PhysicsCategory.arrow.rawValue != 0) &&
+           (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 )) {
             arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)
         }
-        else if((firstBody.categoryBitMask & PhysicsCategory.Player != 0) &&
-                (secondBody.categoryBitMask & PhysicsCategory.Enemy != 0 ))
+        else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
+                (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 ))
         {
             if(isInvuln == false) {
                 playerGotHit(enemy: secondBody.node as! SKSpriteNode)
             }
         }
-        else if((firstBody.categoryBitMask & PhysicsCategory.Player != 0) &&
-                (secondBody.categoryBitMask & PhysicsCategory.Hole != 0 )) {
+        else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
+                (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0 )) {
 //            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
 //            if let scene = GameScene(fileNamed: "GameScene") {
 //                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)

@@ -56,7 +56,7 @@ func createGround() -> [SKSpriteNode]{
         ground.zPosition = 0
         ground.position = CGPoint(x: (ground.size.width / 2 + (ground.size.width * CGFloat(i))), y: groundTexture.size().height / 2)
         ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
-        ground.physicsBody?.categoryBitMask = PhysicsCategory.Ground
+        ground.physicsBody?.categoryBitMask = PhysicsCategory.ground.rawValue
         ground.physicsBody?.isDynamic = false
         groundElements.append(ground)
         groundHeight = ground.size.height
@@ -173,9 +173,9 @@ func addHole(gameScene: GameScene) -> SKSpriteNode{
     
     hole.physicsBody = SKPhysicsBody(texture: holeTexture, size: CGSize(width: holeTexture.size().width, height: holeTexture.size().height))
     hole.physicsBody?.isDynamic = false
-    hole.physicsBody?.categoryBitMask = PhysicsCategory.Hole
-    hole.physicsBody?.contactTestBitMask = PhysicsCategory.Player
-    hole.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+    hole.physicsBody?.categoryBitMask = PhysicsCategory.pit.rawValue
+    hole.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
+    hole.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
     
     let randomDuration = random(min: CGFloat(3.0), max: CGFloat(6.0))
 
