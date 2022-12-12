@@ -10,10 +10,11 @@ import SpriteKit
 struct PhysicsCategory {
     static let Nobody :UInt32 = 0
     static let All :UInt32 = UInt32.max
-    static let Enemy :UInt32 = 0b1
-    static let Ravine :UInt32 = 0b10
-    static let Arrow :UInt32 = 0b100
-    static let Player :UInt32 = 0b1000
+    static let Ground :UInt32 = 0b1
+    static let Enemy :UInt32 = 0b10
+    static let Ravine :UInt32 = 0b100
+    static let Arrow :UInt32 = 0b1000
+    static let Player :UInt32 = 0b10000
 }
 
 enum GameState {
@@ -63,7 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         
-        physicsWorld.gravity = CGVectorMake(0.0, 0)
+        physicsWorld.gravity = CGVectorMake(0.0, -9.8)
         physicsWorld.contactDelegate = self
         setStartLabel()
         createSky()
@@ -90,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 playerAtlas.textureNamed("ElfiorIdle5"),
                 playerAtlas.textureNamed("ElfiorIdle6"),
                 playerAtlas.textureNamed("ElfiorIdle7"),
-                playerAtlas.textureNamed("ElfiorIdle8"),
+                playerAtlas.textureNamed("ElfiorIdle8")
 
             ]
         }
@@ -113,26 +114,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 playerAtlas.textureNamed("ElfiorIdle5"),
                 playerAtlas.textureNamed("ElfiorIdle6"),
                 playerAtlas.textureNamed("ElfiorIdle7"),
-                playerAtlas.textureNamed("ElfiorIdle8"),
+                playerAtlas.textureNamed("ElfiorIdle8")
 
             ]
         }
         
-        let idleAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.3)
+        let runningAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.3)
         
-        player.run(SKAction.repeatForever(idleAnimation), withKey: "ElfiorIdleAnimation")
+        player.run(SKAction.repeatForever(runningAnimation), withKey: "ElfiorIdleAnimation")
     }
     
+    func ElfiorAttackAnimation() {
+        var playerAtlas: SKTextureAtlas {
+            return SKTextureAtlas(named: "ElfiorAttack")
+        }
+        var playerIdleTextures: [SKTexture] {
+            return [
+                playerAtlas.textureNamed("ElfiorAttack1"),
+                playerAtlas.textureNamed("ElfiorAttack2"),
+                playerAtlas.textureNamed("ElfiorAttack3"),
+                playerAtlas.textureNamed("ElfiorAttack4"),
+                playerAtlas.textureNamed("ElfiorAttack5"),
+                playerAtlas.textureNamed("ElfiorAttack6"),
+                playerAtlas.textureNamed("ElfiorAttack7"),
+                playerAtlas.textureNamed("ElfiorAttack8"),
+
+            ]
+        }
+        
+        let attackAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.1)
+        
+        player.run(attackAnimation, withKey: "ElfiorAttackAnimation")
+    }
+
     @objc func handleSwipe(sender: UISwipeGestureRecognizer) {
         if sender.state == .ended {
             switch sender.direction {
             case .up:
             // Call your jump function here
                 if player.action(forKey: "jump") == nil { // check that there's no jump action running
-                    let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
-                    let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
-
-                    player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
+//                    let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
+//                    let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
+//
+//                    player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
+                    player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 200))
                   }
             default:
                 break
@@ -142,10 +167,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createSky() {
         let sky = SKSpriteNode(color: UIColor(ciColor: CIColor(red: 99/255, green: 167/255, blue: 241/255)), size: CGSize(width: frame.width, height: frame.height))
-        sky.anchorPoint = CGPoint(x: 0.5, y: 1)
+        sky.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         
-        sky.position = CGPoint(x: frame.midX, y: frame.height)
+        sky.position = CGPoint(x: frame.midX, y: frame.midY)
         
         addChild(sky)
         
@@ -180,8 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ground.zPosition = 0
             ground.position = CGPoint(x: (ground.size.width / 2 + (ground.size.width * CGFloat(i))), y: groundTexture.size().height / 2)
             ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
-            ground.physicsBody?.categoryBitMask = PhysicsCategory.Nobody
-            ground.physicsBody?.collisionBitMask = PhysicsCategory.Player
+            ground.physicsBody?.categoryBitMask = PhysicsCategory.Ground
             ground.physicsBody?.isDynamic = false
             addChild(ground)
             groundElements.append(ground)
@@ -203,18 +227,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func createPlayer() {
-        let playerTexture = SKTexture(imageNamed: "Elfior")
+        let playerTexture = SKTexture(imageNamed: "ElfiorAttack1")
         player = SKSpriteNode(texture: playerTexture)
+        player.setScale(0.5)
         player.zPosition = 10
-        player.position = CGPoint(x: frame.width / 2 - 30, y: groundHeight / 2.5)
-        
+        player.position = CGPoint(x: frame.width / 2 - 30, y: groundHeight / 2.7 )
         addChild(player)
         
         
-        player.physicsBody = SKPhysicsBody(texture: playerTexture, size: playerTexture.size())
+        player.physicsBody = SKPhysicsBody(texture: playerTexture, size: CGSize(width: playerTexture.size().width / 2, height: playerTexture.size().height / 2))
         player.physicsBody?.categoryBitMask = PhysicsCategory.Player
         player.physicsBody?.contactTestBitMask = PhysicsCategory.Enemy
-        player.physicsBody?.collisionBitMask = PhysicsCategory.Nobody
+        player.physicsBody?.collisionBitMask = PhysicsCategory.Ground
+        player.physicsBody?.allowsRotation = false
         player.physicsBody?.isDynamic = false
 
     }
@@ -310,6 +335,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy.run(SKAction.sequence([moveAction, moveActionDone]))
     }
     
+    func enemyDeathAnimation(enemy: SKSpriteNode!) {
+        var enemyAtlas: SKTextureAtlas {
+            return SKTextureAtlas(named: "OgreDeath")
+        }
+        var enemyDeathTextures: [SKTexture] {
+            return [
+                enemyAtlas.textureNamed("OgreDeath1"),
+                enemyAtlas.textureNamed("OgreDeath2"),
+                enemyAtlas.textureNamed("OgreDeath3"),
+                enemyAtlas.textureNamed("OgreDeath4"),
+                enemyAtlas.textureNamed("OgreDeath5"),
+                enemyAtlas.textureNamed("OgreDeath6"),
+                enemyAtlas.textureNamed("OgreDeath7"),
+                enemyAtlas.textureNamed("OgreDeath8"),
+                enemyAtlas.textureNamed("OgreDeath9")
+            ]
+        }
+        
+        let deathAnimation = SKAction.animate(with: enemyDeathTextures, timePerFrame: 0.1)
+        
+        enemy.run(deathAnimation, withKey: "OgreDeathAnimation")
+    }
     func addHills(){
         let hills = SKSpriteNode(imageNamed: "Hills")
         hills.position = CGPoint(x: size.width + 200, y: groundHeight / 2.5)
@@ -357,7 +404,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hasStarted = true
         movePlayer()
         startGround()
-        startIdleAnimation()
+        
         for node in backgroundElements {
             let time = node.position.x / 100
             let isVillage = node.name == "village"
@@ -366,10 +413,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         createHUD()
         let enemySpawn = SKAction.sequence([SKAction.run(addEnemy), SKAction.wait(forDuration: 2), SKAction.run(addEnemy), SKAction.wait(forDuration: 2), SKAction.run(addRavine)])
-        let treeSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 20))), SKAction.run {
+        let treeSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 15))), SKAction.run {
             self.createSingleTree(iterator: nil, hasStarted: self.hasStarted)
         }])
-        let hillsSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 20))), SKAction.run {
+        let hillsSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 10))), SKAction.run {
             self.addHills()
         }])
         
@@ -378,7 +425,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func movePlayer(){
-        player.run(SKAction.move(to: CGPoint(x: 150, y: groundHeight / 2.4), duration: 3.0))
+        player.run(SKAction.move(to: CGPoint(x: 150, y: groundHeight / 2.7), duration: 3.0))
         player.physicsBody?.isDynamic = true
     }
     
@@ -407,7 +454,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let shootAction = SKAction.move(to: realDistance, duration: 1.0)
         let rotateAction = SKAction.rotate(toAngle: -(.pi / 4), duration: 2.0)
         let shootActionDone = SKAction.removeFromParent()
-        arrow.run(SKAction.sequence([SKAction.group([shootAction, rotateAction]), shootActionDone]))
+        
+        ElfiorAttackAnimation()
+        SKAction.wait(forDuration: 2)
+        arrow.run(SKAction.sequence([ SKAction.group([shootAction, rotateAction]), shootActionDone]))
 
     }
     
@@ -454,11 +504,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         else if((firstBody.categoryBitMask & PhysicsCategory.Player != 0) &&
                 (secondBody.categoryBitMask & PhysicsCategory.Ravine != 0 )) {
-            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
-            if let scene = GameScene(fileNamed: "GameScene") {
-                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                view?.presentScene(scene, transition: transition)
-            }
+//            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
+//            if let scene = GameScene(fileNamed: "GameScene") {
+//                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+//                view?.presentScene(scene, transition: transition)
+//            }
         }
     }
     
@@ -478,7 +528,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func arrowCollidesWithEnemy(arrow: SKSpriteNode, enemy: SKSpriteNode) {
         arrow.removeFromParent()
         
-        enemy.removeFromParent()
+        enemy.removeAllActions()
+        enemy.physicsBody?.categoryBitMask = 0
+        enemyDeathAnimation(enemy: enemy)
+        enemy.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
     }
     
     override func update(_ currentTime: TimeInterval) {
