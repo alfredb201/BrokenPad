@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		930C342529436D0700AC2AC4 /* Project36Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C342429436D0700AC2AC4 /* Project36Code.swift */; };
 		930C342729436D5400AC2AC4 /* TowerDefenseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */; };
+		934CDBBF29476D6900E56425 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBBE29476D6900E56425 /* Player.swift */; };
+		934CDBC1294771EA00E56425 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC0294771EA00E56425 /* Enemy.swift */; };
+		934CDBC329477CF300E56425 /* BackgroundElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC229477CF300E56425 /* BackgroundElements.swift */; };
+		934CDBC52947896B00E56425 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC42947896B00E56425 /* Arrow.swift */; };
 		938B5500294371540089CC8D /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 938B54FF294371540089CC8D /* GameScene.sks */; };
 		93F4405029436AF600191440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4404F29436AF600191440 /* AppDelegate.swift */; };
 		93F4405629436AF600191440 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4405529436AF600191440 /* GameScene.swift */; };
@@ -21,6 +25,10 @@
 /* Begin PBXFileReference section */
 		930C342429436D0700AC2AC4 /* Project36Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project36Code.swift; sourceTree = "<group>"; };
 		930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerDefenseCode.swift; sourceTree = "<group>"; };
+		934CDBBE29476D6900E56425 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		934CDBC0294771EA00E56425 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		934CDBC229477CF300E56425 /* BackgroundElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundElements.swift; sourceTree = "<group>"; };
+		934CDBC42947896B00E56425 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		938B54FF294371540089CC8D /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		93F4404C29436AF600191440 /* Elfior.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Elfior.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93F4404F29436AF600191440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +50,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		934CDBC629478A9F00E56425 /* GoodFiles */ = {
+			isa = PBXGroup;
+			children = (
+				934CDBC42947896B00E56425 /* Arrow.swift */,
+				934CDBC229477CF300E56425 /* BackgroundElements.swift */,
+				934CDBC0294771EA00E56425 /* Enemy.swift */,
+				93F4405529436AF600191440 /* GameScene.swift */,
+				934CDBBE29476D6900E56425 /* Player.swift */,
+			);
+			path = GoodFiles;
+			sourceTree = "<group>";
+		};
+		934CDBC729478AB000E56425 /* BadFiles */ = {
+			isa = PBXGroup;
+			children = (
+				930C342429436D0700AC2AC4 /* Project36Code.swift */,
+				930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */,
+			);
+			path = BadFiles;
+			sourceTree = "<group>";
+		};
 		93F4404329436AF600191440 = {
 			isa = PBXGroup;
 			children = (
@@ -61,14 +90,13 @@
 		93F4404E29436AF600191440 /* Elfior */ = {
 			isa = PBXGroup;
 			children = (
+				934CDBC629478A9F00E56425 /* GoodFiles */,
 				93F4404F29436AF600191440 /* AppDelegate.swift */,
-				93F4405529436AF600191440 /* GameScene.swift */,
 				93F4405729436AF600191440 /* GameViewController.swift */,
 				93F4405929436AF600191440 /* Main.storyboard */,
 				93F4405C29436AF600191440 /* Assets.xcassets */,
 				93F4405E29436AF600191440 /* LaunchScreen.storyboard */,
-				930C342429436D0700AC2AC4 /* Project36Code.swift */,
-				930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */,
+				934CDBC729478AB000E56425 /* BadFiles */,
 				938B54FF294371540089CC8D /* GameScene.sks */,
 			);
 			path = Elfior;
@@ -146,11 +174,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				934CDBC329477CF300E56425 /* BackgroundElements.swift in Sources */,
+				934CDBC1294771EA00E56425 /* Enemy.swift in Sources */,
 				93F4405629436AF600191440 /* GameScene.swift in Sources */,
 				93F4405829436AF600191440 /* GameViewController.swift in Sources */,
 				930C342729436D5400AC2AC4 /* TowerDefenseCode.swift in Sources */,
 				93F4405029436AF600191440 /* AppDelegate.swift in Sources */,
+				934CDBBF29476D6900E56425 /* Player.swift in Sources */,
 				930C342529436D0700AC2AC4 /* Project36Code.swift in Sources */,
+				934CDBC52947896B00E56425 /* Arrow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
