@@ -19,10 +19,10 @@ var sky: SKSpriteNode!
 var HUD: SKSpriteNode!
 
 
-let groundTexture = SKTexture(imageNamed: "GameGround")
 let treeTexture = SKTexture(imageNamed: "Tree")
 let cloudTexture = SKTexture(imageNamed: "Cloud")
 let cloudsTexture = SKTexture(imageNamed: "Clouds")
+let groundTexture = SKTexture(imageNamed: "GameGround")
 
 var groundHeight: CGFloat = 0.0
 let numberOfClouds = Int(random(min: 7, max: 12))
@@ -50,7 +50,7 @@ func createVillage(gameScene: GameScene) -> SKSpriteNode{
     return village
 }
 
-func createGround() -> [SKSpriteNode]{
+func createGround(groundTexture: SKTexture) -> [SKSpriteNode]{
     for i in 0 ... 3 {
         let ground = SKSpriteNode(texture: groundTexture)
         ground.zPosition = 0
@@ -64,7 +64,7 @@ func createGround() -> [SKSpriteNode]{
     return groundElements
 }
 
-func startGround() {
+func startGround(groundTexture: SKTexture) {
     for groundElement in groundElements {
         let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
         let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
@@ -98,7 +98,7 @@ func createClouds(gameScene: GameScene) -> [SKSpriteNode]{
 
 func createSingleCloud(gameScene: GameScene, firstClouds: Bool) -> SKSpriteNode{
     let cloud = SKSpriteNode(texture: random(min: 0, max: 10) < 6.0 ? cloudTexture : cloudsTexture)
-    cloud.zPosition = -35
+    cloud.zPosition = -40
     cloud.yScale = random(min: 1.0, max: 3.0)
     cloud.xScale = random(min: 0, max: 100) < 50 ? cloud.yScale : -cloud.yScale
     cloud.position = CGPoint(x: firstClouds ? gameScene.frame.width * (random(min: 0, max: 3.0) / 3) : gameScene.frame.width + cloudTexture.size().width, y: gameScene.frame.height * random(min: 0.5, max: 0.9))

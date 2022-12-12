@@ -35,6 +35,7 @@ func random(min: CGFloat, max: CGFloat) -> CGFloat {
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+
     
     var actualNumberOfClouds = numberOfClouds {
         didSet{
@@ -48,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     var startLabel: SKLabelNode!
+    var scoreLabel: SKLabelNode!
     var gameState = GameState.showingLogo
     var playerLives: Int = 3 {
         didSet{
@@ -59,6 +61,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isInvuln: Bool = false
     var invulnTime: TimeInterval = 0
     var hasStarted: Bool = false
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "SCORE: \(score)"
+        }
+    }
     
     
     override func didMove(to view: SKView) {
@@ -91,7 +98,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBackground(){
-        for ground in createGround() {
+        for ground in createGround(groundTexture: groundTexture) {
             addChild(ground)
         }
         addChild(createSky(gameScene: self))
@@ -120,7 +127,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func startGame() {
         hasStarted = true
         movePlayer(groundHeight: groundHeight)
-        startGround()
+        startGround(groundTexture: groundTexture)
+        createScore()
         
         for node in backgroundElements {
             let time = node.position.x / 100
@@ -130,7 +138,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         addChild(createHUD(gameScene: self))
         let enemyCreate = SKAction.run {
-            self.addChild(addEnemy(gameScene: self, groundHeight: groundHeight))
+            if(random(min: 0, max: 90) < 30) {
+                self.addChild(addOgre(gameScene: self, groundHeight: groundHeight))
+            }
+            else if(random(min: 0, max: 90) > 60) {
+                self.addChild(addArmoredOgre(gameScene: self, groundHeight: groundHeight))
+            }
+            else {
+                self.addChild(addShieldedOgre(gameScene: self, groundHeight: groundHeight))
+            }
         }
         let holeCreate = SKAction.run {
             self.addChild(addHole(gameScene: self))
@@ -147,8 +163,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
-   
-    
+    func createScore() {
+        scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
+        scoreLabel.fontSize = 24
+
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
+        scoreLabel.text = "SCORE: 0"
+        scoreLabel.fontColor = UIColor.black
+
+        addChild(scoreLabel)
+    }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         switch gameState {
@@ -183,6 +207,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if((firstBody.categoryBitMask & PhysicsCategory.arrow.rawValue != 0) &&
            (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 )) {
             arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)
+            score += 10
         }
         else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
                 (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 ))
@@ -191,6 +216,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 playerGotHit(enemy: secondBody.node as! SKSpriteNode)
             }
         }
+<<<<<<< Updated upstream
         else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
                 (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0 )) {
 //            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
@@ -198,6 +224,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
 //                view?.presentScene(scene, transition: transition)
 //            }
+=======
+        else if((firstBody.categoryBitMask & PhysicsCategory.Player != 0) &&
+                (secondBody.categoryBitMask & PhysicsCategory.Hole != 0 )) {
+            firstBody.collisionBitMask = PhysicsCategory.Nobody
+            if let scene = GameScene(fileNamed: "GameScene") {
+                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+                view?.presentScene(scene, transition: transition)
+            }
+>>>>>>> Stashed changes
         }
     }
     
