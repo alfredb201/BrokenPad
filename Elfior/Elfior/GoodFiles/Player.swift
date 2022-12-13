@@ -76,23 +76,23 @@ func createPlayer(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode {
     
     func ElfiorRunningAnimation() {
         var playerAtlas: SKTextureAtlas {
-            return SKTextureAtlas(named: "ElfiorIdle")
+            return SKTextureAtlas(named: "ElfiorRunning")
         }
         var playerIdleTextures: [SKTexture] {
             return [
-                playerAtlas.textureNamed("ElfiorIdle1"),
-                playerAtlas.textureNamed("ElfiorIdle2"),
-                playerAtlas.textureNamed("ElfiorIdle3"),
-                playerAtlas.textureNamed("ElfiorIdle4"),
-                playerAtlas.textureNamed("ElfiorIdle5"),
-                playerAtlas.textureNamed("ElfiorIdle6"),
-                playerAtlas.textureNamed("ElfiorIdle7"),
-                playerAtlas.textureNamed("ElfiorIdle8")
+                playerAtlas.textureNamed("ElfiorRunning1"),
+                playerAtlas.textureNamed("ElfiorRunning2"),
+                playerAtlas.textureNamed("ElfiorRunning3"),
+                playerAtlas.textureNamed("ElfiorRunning4"),
+                playerAtlas.textureNamed("ElfiorRunning5"),
+                playerAtlas.textureNamed("ElfiorRunning6"),
+                playerAtlas.textureNamed("ElfiorRunning7"),
+                playerAtlas.textureNamed("ElfiorRunning8")
                 
             ]
         }
         
-        let runningAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.3)
+        let runningAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.1)
         
         elfior.run(SKAction.repeatForever(runningAnimation), withKey: "ElfiorIdleAnimation")
     }

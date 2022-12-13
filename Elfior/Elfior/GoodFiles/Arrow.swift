@@ -14,11 +14,13 @@ func shootArrow(gameScene:GameScene, _ touches: Set<UITouch>) -> SKSpriteNode{
     let arrow = SKSpriteNode(imageNamed: "Arrow")
     arrow.setScale(5.0)
     arrow.position = elfior.position
+    arrow.position.y = elfior.position.y + 30
     
     let distance = touchPosition - arrow.position
     
     arrow.physicsBody = SKPhysicsBody(circleOfRadius: arrow.size.width/4)
     arrow.physicsBody?.isDynamic = true
+    arrow.isHidden = true
     arrow.physicsBody?.categoryBitMask = PhysicsCategory.arrow.rawValue
     arrow.physicsBody?.contactTestBitMask = PhysicsCategory.enemy.rawValue
     arrow.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
@@ -30,11 +32,13 @@ func shootArrow(gameScene:GameScene, _ touches: Set<UITouch>) -> SKSpriteNode{
     let shootAction = SKAction.move(to: realDistance, duration: 1.0)
     let rotateAction = SKAction.rotate(toAngle: -(.pi / 4), duration: 3.0)
     let shootActionDone = SKAction.removeFromParent()
-    
+    let showArrow = SKAction.run {
+        arrow.isHidden = false
+    }
     ElfiorAttackAnimation()
-    SKAction.wait(forDuration: 2)
-    arrow.run(SKAction.sequence([ SKAction.group([shootAction, rotateAction]), shootActionDone]))
-    
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(220)) {
+        arrow.run(SKAction.sequence([showArrow ,SKAction.group([shootAction, rotateAction]), shootActionDone]))
+    }
     return arrow
 }
     func arrowCollidesWithEnemy(arrow: SKSpriteNode, enemy: SKSpriteNode) {

@@ -36,14 +36,15 @@ func random(min: CGFloat, max: CGFloat) -> CGFloat {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var background = BackgroundElements()
     
-    var actualNumberOfClouds = numberOfClouds {
+    var actualNumberOfClouds = 1 {
         didSet{
             if actualNumberOfClouds == 0{
-                actualNumberOfClouds = numberOfClouds
+                actualNumberOfClouds = background.numberOfClouds
             }
             let cloudSpawn = SKAction.run {
-                self.addChild(createSingleCloud(gameScene: self, firstClouds: false))
+                self.addChild(self.background.createSingleCloud(gameScene: self, firstClouds: false))
             }
             run(cloudSpawn)
         }
@@ -54,7 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var playerLives: Int = 3 {
         didSet{
             if(playerLives > 0){
-                HUD.texture = SKTexture(imageNamed: "HUD\(playerLives)")
+                background.HUD.texture = SKTexture(imageNamed: "HUD\(playerLives)")
             }
         }
     }
@@ -66,7 +67,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scoreLabel.text = "SCORE: \(score)"
         }
     }
-    
+    var timeGroundSpawn = 1.0
+
     
     override func didMove(to view: SKView) {
         physicsWorld.gravity = CGVectorMake(0.0, -9.8)
@@ -89,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     //                    let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
                     //
                     //                    player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
-                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
                 }
             default:
                 break
@@ -98,20 +100,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBackground(){
-            for ground in createGround() {
-                addChild(ground)
-            }
-            addChild(createSky(gameScene: self))
-            addChild(createVillage(gameScene: self))
-            addChild(createPlayer(gameScene: self, groundHeight: groundHeight))
-            addChild(createFirepit())
-            
-            for cloud in createClouds(gameScene: self) {
-                addChild(cloud)
-            }
-            for tree in createTrees(gameScene: self) {
-                addChild(tree)
-            }
+        for ground in background.createGround() {
+            addChild(ground)
+        }
+        addChild(background.createSky(gameScene: self))
+        addChild(background.createVillage(gameScene: self))
+        addChild(createPlayer(gameScene: self, groundHeight: background.groundHeight))
+        addChild(background.createFirepit())
+        
+        for cloud in background.createClouds(gameScene: self) {
+            addChild(cloud)
+        }
+        for tree in background.createTrees(gameScene: self) {
+            addChild(tree)
+        }
     }
     
     
@@ -126,48 +128,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func startGame() {
         hasStarted = true
-        movePlayer(groundHeight: groundHeight)
-        startGround()
+        movePlayer(groundHeight: background.groundHeight)
         createScore()
-        
-        for node in backgroundElements {
-            let time = node.position.x / 100
+        ElfiorRunningAnimation()
+        background.startGround()
+        let holeSpawn = SKAction.run {
+//            if(random(min: 0, max: 100) < 20){
+//            }
+        }
+        let movingGroundSpawn = SKAction.sequence([SKAction.run {
+            if(random(min: 0, max: 100) > 20){
+                self.addChild(self.background.createMovingGround(gameScene: self))
+                self.timeGroundSpawn = 2.2
+            }
+            else{
+                self.addChild(self.background.addHole(gameScene: self))
+                print("hole")
+                self.timeGroundSpawn = 0.5
+            }
+        },SKAction.wait(forDuration: timeGroundSpawn)])
+        run(SKAction.repeatForever(movingGroundSpawn))
+        for node in background.backgroundElements {
+            let time = node.name == "ground" ? node.position.x / 100 : node.position.x / 100
             let isVillage = node.name == "village"
             let moveAction = SKAction.move(to: CGPoint(x: -node.frame.width, y: node.position.y), duration: isVillage ? 7 : time )
             node.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
         }
-        addChild(createHUD(gameScene: self))
+        
+        addChild(background.createHUD(gameScene: self))
         let enemyCreate = SKAction.run {
             if(random(min: 0, max: 90) < 30) {
-                self.addChild(addOgre(gameScene: self, groundHeight: groundHeight))
+                self.addChild(addOgre(gameScene: self, groundHeight: self.background.groundHeight))
             }
             else if(random(min: 0, max: 90) > 60) {
-                self.addChild(addArmoredOgre(gameScene: self, groundHeight: groundHeight))
+                self.addChild(addArmoredOgre(gameScene: self, groundHeight: self.background.groundHeight))
             }
             else {
-                self.addChild(addShieldedOgre(gameScene: self, groundHeight: groundHeight))
+                self.addChild(addShieldedOgre(gameScene: self, groundHeight: self.background.groundHeight))
             }
         }
         let holeCreate = SKAction.run {
-            self.addChild(addHole(gameScene: self))
+            self.addChild(self.background.addHole(gameScene: self))
         }
-        let enemySpawn = SKAction.sequence([enemyCreate, SKAction.wait(forDuration: 2), enemyCreate, SKAction.wait(forDuration: 2), holeCreate])
+        let enemySpawn = SKAction.sequence([enemyCreate, SKAction.wait(forDuration: 4), enemyCreate, SKAction.wait(forDuration: 4)])
         let treeSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 15))), SKAction.run {
-            self.addChild(createSingleTree(gameScene: self, iterator: nil, hasStarted: self.hasStarted))
+            self.addChild(self.background.createSingleTree(gameScene: self, iterator: nil, hasStarted: self.hasStarted))
         }])
         let hillsSpawn = SKAction.sequence([SKAction.wait(forDuration: TimeInterval(floatLiteral: random(min: 5, max: 10))), SKAction.run {
-            self.addChild(addHills(gameScene: self))
+            self.addChild(self.background.addHills(gameScene: self))
         }])
         
-        run(SKAction.sequence([SKAction.wait(forDuration: 8),SKAction.group([SKAction.repeatForever(enemySpawn), SKAction.repeatForever(treeSpawn), SKAction.repeatForever(hillsSpawn)])]))
+        run(SKAction.sequence([SKAction.wait(forDuration: 6),SKAction.group([SKAction.repeatForever(enemySpawn), SKAction.repeatForever(treeSpawn), SKAction.repeatForever(hillsSpawn)])]))
         
     }
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
-        scoreLabel.fontSize = 24
+        scoreLabel.fontSize = 20
         
-        scoreLabel.position = CGPoint(x: frame.midX, y: frame.maxY - 60)
+        scoreLabel.position = CGPoint(x: frame.maxX - 125, y: frame.maxY - 60)
         scoreLabel.text = "SCORE: 0"
         scoreLabel.fontColor = UIColor.black
         
@@ -207,7 +226,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if((firstBody.categoryBitMask & PhysicsCategory.arrow.rawValue != 0) &&
            (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 )) {
             arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)
-            score += 10
+            if(secondBody.node?.name == "ogre"){
+                score += 10
+            }
+            else if(secondBody.node?.name == "armoredOgre" || secondBody.node?.name == "shieldedOgre"){
+                score += 20
+            }
         }
         else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
                 (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0 ))
@@ -217,44 +241,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
-                (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0 )) {
-            //            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
-            self.removeAllChildren()
-            stopGround()
-            if let scene = GameScene(fileNamed: "GameScene") {
-                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                view?.presentScene(scene, transition: transition)
-            }
-        }
-    }
-    
-    
-    func playerGotHit(enemy: SKSpriteNode){
-        enemy.removeFromParent()
-        playerLives -= 1
-        if(playerLives < 1) {
-            self.removeAllChildren()
-            stopGround()
-            if let scene = GameScene(fileNamed: "GameScene") {
-                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                view?.presentScene(scene, transition: transition)
-            }
-        }
-        isInvuln = true
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        if(isInvuln == true){
-            invulnTime += 0.1
-        }
+//        else if((firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
+//                (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0 )) {
+//            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
+//            SKAction.wait(forDuration: 5)
+//            if let scene = GameScene(fileNamed: "GameScene") {
+//                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+//                view?.presentScene(scene, transition: transition)
+//            }
+//        }
         
-        if (invulnTime > 10) {
-            isInvuln = false
-            invulnTime = 0
+        
+        func playerGotHit(enemy: SKSpriteNode){
+            enemy.removeFromParent()
+            playerLives -= 1
+            if(playerLives < 1) {
+                if let scene = GameScene(fileNamed: "GameScene") {
+                    let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+                    view?.presentScene(scene, transition: transition)
+                }
+            }
+            isInvuln = true
         }
     }
+        
+        override func update(_ currentTime: TimeInterval) {
+            if(isInvuln == true){
+                invulnTime += 0.1
+            }
+            
+            if (invulnTime > 10) {
+                isInvuln = false
+                invulnTime = 0
+            }
+        }
+     
 }
 
 
