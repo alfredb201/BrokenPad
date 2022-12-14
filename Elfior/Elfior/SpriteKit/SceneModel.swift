@@ -132,7 +132,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                     self.timeGroundSpawn = 2.2
                 } else {
                     self.addChild(self.background.addHole(scene: self))
-                    print("hole")
                     self.timeGroundSpawn = 0.5
                 }
             },

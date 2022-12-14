@@ -96,65 +96,56 @@ func addArmoredOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
 }
 
 func enemyDeathAnimation(enemy: SKSpriteNode!) {
-    var enemyAtlas: SKTextureAtlas {
-        return SKTextureAtlas(named: "OgreDeath")
-    }
-    var enemyDeathTextures: [SKTexture] {
-        return [
-            enemyAtlas.textureNamed("OgreDeath1"),
-            enemyAtlas.textureNamed("OgreDeath2"),
-            enemyAtlas.textureNamed("OgreDeath3"),
-            enemyAtlas.textureNamed("OgreDeath4"),
-            enemyAtlas.textureNamed("OgreDeath5"),
-            enemyAtlas.textureNamed("OgreDeath6"),
-            enemyAtlas.textureNamed("OgreDeath7"),
-            enemyAtlas.textureNamed("OgreDeath8"),
-            enemyAtlas.textureNamed("OgreDeath9")
-        ]
-    }
-    let deathAnimation = SKAction.animate(with: enemyDeathTextures, timePerFrame: 0.1)
+    let atlas = SKTextureAtlas(named: "OgreDeath")
+    let ogreDeathAnimation = SKAction.animate(
+        with: [
+            atlas.textureNamed("OgreDeath1"),
+            atlas.textureNamed("OgreDeath2"),
+            atlas.textureNamed("OgreDeath3"),
+            atlas.textureNamed("OgreDeath4"),
+            atlas.textureNamed("OgreDeath5"),
+            atlas.textureNamed("OgreDeath6"),
+            atlas.textureNamed("OgreDeath7"),
+            atlas.textureNamed("OgreDeath8"),
+            atlas.textureNamed("OgreDeath9")
+        ],
+        timePerFrame: 0.1)
     
-    enemy.run(deathAnimation, withKey: "OgreDeathAnimation")
+    enemy.run(ogreDeathAnimation, withKey: "OgreDeathAnimation")
 }
 
 func ogreWalkAnimation(enemy: SKSpriteNode!) {
-    var enemyAtlas: SKTextureAtlas {
-        return SKTextureAtlas(named: "OgreWalk")
-    }
-    var enemyWalkTextures: [SKTexture] {
-        return [
-            enemyAtlas.textureNamed("OgreWalk1"),
-            enemyAtlas.textureNamed("OgreWalk2"),
-            enemyAtlas.textureNamed("OgreWalk3"),
-            enemyAtlas.textureNamed("OgreWalk4"),
-            enemyAtlas.textureNamed("OgreWalk5"),
-            enemyAtlas.textureNamed("OgreWalk6"),
-            enemyAtlas.textureNamed("OgreWalk7"),
-            enemyAtlas.textureNamed("OgreWalk8")
-        ]
-    }
-    let walkAnimation = SKAction.animate(with: enemyWalkTextures, timePerFrame: 0.1)
+    let atlas = SKTextureAtlas(named: "BasicWalk")
+    let ogreWalkAnimation = SKAction.animate(
+        with: [
+            atlas.textureNamed("OgreWalk1"),
+            atlas.textureNamed("OgreWalk2"),
+            atlas.textureNamed("OgreWalk3"),
+            atlas.textureNamed("OgreWalk4"),
+            atlas.textureNamed("OgreWalk5"),
+            atlas.textureNamed("OgreWalk6"),
+            atlas.textureNamed("OgreWalk7"),
+            atlas.textureNamed("OgreWalk8")
+        ],
+        timePerFrame: 0.1)
     
-    enemy.run(SKAction.repeatForever(walkAnimation), withKey: "OgreWalkAnimation")
+    enemy.run(SKAction.repeatForever(ogreWalkAnimation), withKey: "OgreWalkAnimation")
 }
 
 func shieldedOgreWalkAnimation(enemy: SKSpriteNode!) {
-    var enemyAtlas: SKTextureAtlas {
-        return SKTextureAtlas(named: "ShieldedOgreWalk")
-    }
-    var enemyWalkTextures: [SKTexture] {
-        return [
-            enemyAtlas.textureNamed("ShieldedOgreWalk1"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk2"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk3"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk4"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk5"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk6"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk7"),
-            enemyAtlas.textureNamed("ShieldedOgreWalk8")
-        ]
-    }
-    let walkAnimation = SKAction.animate(with: enemyWalkTextures, timePerFrame: 0.1)
+    let atlas = SKTextureAtlas(named: "ShieldedWalk")
+    let shieldedWalkAnimation = SKAction.animate(
+        with: [
+            atlas.textureNamed("ShieldedOgreWalk1"),
+            atlas.textureNamed("ShieldedOgreWalk2"),
+            atlas.textureNamed("ShieldedOgreWalk3"),
+            atlas.textureNamed("ShieldedOgreWalk4"),
+            atlas.textureNamed("ShieldedOgreWalk5"),
+            atlas.textureNamed("ShieldedOgreWalk6"),
+            atlas.textureNamed("ShieldedOgreWalk7"),
+            atlas.textureNamed("ShieldedOgreWalk8")
+        ],
+        timePerFrame: 0.1)
     
-    enemy.run(SKAction.repeatForever(walkAnimation), withKey: "OgreWalkAnimation")
+    enemy.run(SKAction.repeatForever(shieldedWalkAnimation), withKey: "OgreWalkAnimation")
 }
