@@ -2,88 +2,98 @@
 //  Enemy.swift
 //  Elfior
 //
-//  Created by Mattia Ferrara on 12/12/22.
+//  Created by Pierpaolo Siciliano on 13/12/22.
 //
 
-import Foundation
 import SpriteKit
 
-    
 var ogre: SKSpriteNode!
 var shieldedOgre: SKSpriteNode!
 var armoredOgre: SKSpriteNode!
 
-func addOgre(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode{
-        ogre = SKSpriteNode(imageNamed: "Ogre")
+func addOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
+    ogre = SKSpriteNode(imageNamed: "Ogre")
     ogre.name = "ogre"
-        ogre.position = CGPoint(x: gameScene.size.width + ogre.size.width / 2, y: groundHeight / 2.5)
-        ogre.zPosition = 10
-        ogre.size = CGSize(width: ogre.size.width / 1.5, height: ogre.size.height / 1.5)
-        ogre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ogre.size.width / 2, height: ogre.size.height / 2))
-        ogre.physicsBody?.isDynamic = false
+    ogre.size = CGSize(width: ogre.size.width / 1.5, height: ogre.size.height / 1.5)
+    ogre.position = CGPoint(x: scene.size.width + ogre.size.width / 2, y: groundHeight / 2.5)
+    ogre.zPosition = 10
+    
+    ogre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ogre.size.width / 2, height: ogre.size.height / 2))
     ogre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     ogre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
     ogre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
-        
-        
-    let randomDuration = random(min: CGFloat(5.0), max: CGFloat(7.0))
-
-        let moveAction = SKAction.move(to: CGPoint(x: -ogre.size.width/2, y: groundHeight / 2.5), duration: TimeInterval(randomDuration))
-        let moveActionDone = SKAction.removeFromParent()
+    ogre.physicsBody?.isDynamic = false
+    
+    let moveAction = SKAction.move(
+        to: CGPoint(x: -ogre.size.width/2, y: groundHeight / 2.5),
+        duration: TimeInterval(CGFloat.random(in: 5.0...7.0))
+    )
+    let moveActionDone = SKAction.removeFromParent()
     let moveAnimation = SKAction.run {
         ogreWalkAnimation(enemy: ogre)
     }
-        ogre.run(SKAction.sequence([moveAnimation, moveAction, moveActionDone]))
-        return ogre
-    }
+    ogre.run(SKAction.sequence([moveAnimation, moveAction, moveActionDone]))
+    
+    return ogre
+}
 
-func addShieldedOgre(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode{
+func addShieldedOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     shieldedOgre = SKSpriteNode(imageNamed: "ShieldedOgreWalk1")
     shieldedOgre.name = "shieldedOgre"
-    shieldedOgre.position = CGPoint(x: gameScene.size.width + shieldedOgre.size.width / 2, y: groundHeight / 2.5)
-    shieldedOgre.zPosition = 10
     shieldedOgre.setScale(0.3)
-    shieldedOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: shieldedOgre.size.width / 2, height: shieldedOgre.size.height / 2))
-    shieldedOgre.physicsBody?.isDynamic = false
+    shieldedOgre.position = CGPoint(x: scene.size.width + shieldedOgre.size.width / 2, y: groundHeight / 2.5)
+    shieldedOgre.zPosition = 10
+    
+    shieldedOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(
+        width: shieldedOgre.size.width / 2,
+        height: shieldedOgre.size.height / 2)
+    )
     shieldedOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     shieldedOgre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
     shieldedOgre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
-        
-    let randomDuration = random(min: CGFloat(5.0), max: CGFloat(7.0))
-
-        let moveAction = SKAction.move(to: CGPoint(x: -shieldedOgre.size.width/2, y: groundHeight / 2.5), duration: TimeInterval(randomDuration))
-        let moveActionDone = SKAction.removeFromParent()
+    shieldedOgre.physicsBody?.isDynamic = false
     
+    let moveAction = SKAction.move(
+        to: CGPoint(x: -shieldedOgre.size.width/2, y: groundHeight / 2.5),
+        duration: TimeInterval(CGFloat.random(in: 5.0...7.0))
+    )
+    let moveActionDone = SKAction.removeFromParent()
     let moveAnimation = SKAction.run {
         shieldedOgreWalkAnimation(enemy: shieldedOgre)
     }
-    shieldedOgre.run(SKAction.sequence([moveAnimation,moveAction, moveActionDone]))
-        return shieldedOgre
-    }
+    shieldedOgre.run(SKAction.sequence([moveAnimation, moveAction, moveActionDone]))
+    
+    return shieldedOgre
+}
 
-func addArmoredOgre(gameScene: GameScene, groundHeight: CGFloat) -> SKSpriteNode{
+func addArmoredOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     armoredOgre = SKSpriteNode(imageNamed: "ArmoredOgreWalk1")
     armoredOgre.name = "armoredOgre"
-    armoredOgre.position = CGPoint(x: gameScene.size.width + armoredOgre.size.width / 2, y: groundHeight / 2.5)
-    armoredOgre.zPosition = 10
     armoredOgre.setScale(0.3)
-    armoredOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: armoredOgre.size.width / 2, height: armoredOgre.size.height / 2))
-    armoredOgre.physicsBody?.isDynamic = false
+    armoredOgre.position = CGPoint(x: scene.size.width + armoredOgre.size.width / 2, y: groundHeight / 2.5)
+    armoredOgre.zPosition = 10
+    
+    armoredOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(
+        width: armoredOgre.size.width / 2,
+        height: armoredOgre.size.height / 2)
+    )
     armoredOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     armoredOgre.physicsBody?.contactTestBitMask = PhysicsCategory.arrow.rawValue | PhysicsCategory.player.rawValue
     armoredOgre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
+    armoredOgre.physicsBody?.isDynamic = false
     
-        
-    let randomDuration = random(min: CGFloat(5.0), max: CGFloat(7.0))
-
-        let moveAction = SKAction.move(to: CGPoint(x: -armoredOgre.size.width/2, y: groundHeight / 2.5), duration: TimeInterval(randomDuration))
-        let moveActionDone = SKAction.removeFromParent()
-//    let moveAnimation = SKAction.run {
-//        ogreWalkAnimation(enemy: armoredOgre)
-//    }
+    let moveAction = SKAction.move(
+        to: CGPoint(x: -armoredOgre.size.width/2, y: groundHeight / 2.5),
+        duration: TimeInterval(CGFloat.random(in: 5.0...7.0))
+    )
+    let moveActionDone = SKAction.removeFromParent()
+//  let moveAnimation = SKAction.run {
+//      ogreWalkAnimation(enemy: armoredOgre)
+//  }
     armoredOgre.run(SKAction.sequence([moveAction, moveActionDone]))
-        return armoredOgre
-    }
+    
+    return armoredOgre
+}
 
 func enemyDeathAnimation(enemy: SKSpriteNode!) {
     var enemyAtlas: SKTextureAtlas {
@@ -102,7 +112,6 @@ func enemyDeathAnimation(enemy: SKSpriteNode!) {
             enemyAtlas.textureNamed("OgreDeath9")
         ]
     }
-    
     let deathAnimation = SKAction.animate(with: enemyDeathTextures, timePerFrame: 0.1)
     
     enemy.run(deathAnimation, withKey: "OgreDeathAnimation")
@@ -124,7 +133,6 @@ func ogreWalkAnimation(enemy: SKSpriteNode!) {
             enemyAtlas.textureNamed("OgreWalk8")
         ]
     }
-    
     let walkAnimation = SKAction.animate(with: enemyWalkTextures, timePerFrame: 0.1)
     
     enemy.run(SKAction.repeatForever(walkAnimation), withKey: "OgreWalkAnimation")
@@ -146,11 +154,7 @@ func shieldedOgreWalkAnimation(enemy: SKSpriteNode!) {
             enemyAtlas.textureNamed("ShieldedOgreWalk8")
         ]
     }
-    
     let walkAnimation = SKAction.animate(with: enemyWalkTextures, timePerFrame: 0.1)
     
     enemy.run(SKAction.repeatForever(walkAnimation), withKey: "OgreWalkAnimation")
 }
-
-    
-
