@@ -7,40 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		930C342529436D0700AC2AC4 /* Project36Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C342429436D0700AC2AC4 /* Project36Code.swift */; };
-		930C342729436D5400AC2AC4 /* TowerDefenseCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */; };
-		934CDBBF29476D6900E56425 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBBE29476D6900E56425 /* Player.swift */; };
-		934CDBC1294771EA00E56425 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC0294771EA00E56425 /* Enemy.swift */; };
-		934CDBC329477CF300E56425 /* BackgroundElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC229477CF300E56425 /* BackgroundElements.swift */; };
-		934CDBC52947896B00E56425 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934CDBC42947896B00E56425 /* Arrow.swift */; };
-		938B5500294371540089CC8D /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 938B54FF294371540089CC8D /* GameScene.sks */; };
-		93F4405029436AF600191440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4404F29436AF600191440 /* AppDelegate.swift */; };
-		93F4405629436AF600191440 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4405529436AF600191440 /* GameScene.swift */; };
-		93F4405829436AF600191440 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F4405729436AF600191440 /* GameViewController.swift */; };
-		93F4405B29436AF600191440 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4405929436AF600191440 /* Main.storyboard */; };
-		93F4405D29436AF600191440 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93F4405C29436AF600191440 /* Assets.xcassets */; };
-		93F4406029436AF600191440 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93F4405E29436AF600191440 /* LaunchScreen.storyboard */; };
+		889A151E2947C42800725B82 /* ElfiorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A151D2947C42800725B82 /* ElfiorApp.swift */; };
+		889A15202947C42800725B82 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A151F2947C42800725B82 /* ContentView.swift */; };
+		889A15222947C42900725B82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 889A15212947C42900725B82 /* Assets.xcassets */; };
+		889A15252947C42900725B82 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 889A15242947C42900725B82 /* Preview Assets.xcassets */; };
+		889A152C2947C51200725B82 /* Scene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 889A152B2947C51200725B82 /* Scene.sks */; };
+		889A152F2947C53F00725B82 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 889A152E2947C53F00725B82 /* Actions.sks */; };
+		889A15312947C6B000725B82 /* SceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15302947C6B000725B82 /* SceneModel.swift */; };
+		889A15342947F18800725B82 /* Landscape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15332947F18800725B82 /* Landscape.swift */; };
+		889A15362947F25B00725B82 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15352947F25B00725B82 /* Player.swift */; };
+		889A15382947F2C200725B82 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15372947F2C200725B82 /* Enemy.swift */; };
+		889A153A2947F2FD00725B82 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15392947F2FD00725B82 /* Arrow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		930C342429436D0700AC2AC4 /* Project36Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project36Code.swift; sourceTree = "<group>"; };
-		930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerDefenseCode.swift; sourceTree = "<group>"; };
-		934CDBBE29476D6900E56425 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		934CDBC0294771EA00E56425 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
-		934CDBC229477CF300E56425 /* BackgroundElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundElements.swift; sourceTree = "<group>"; };
-		934CDBC42947896B00E56425 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
-		938B54FF294371540089CC8D /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		93F4404C29436AF600191440 /* Elfior.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Elfior.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		93F4404F29436AF600191440 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		93F4405529436AF600191440 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		93F4405729436AF600191440 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		93F4405A29436AF600191440 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		93F4405C29436AF600191440 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		93F4405F29436AF600191440 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		889A151A2947C42800725B82 /* Elfior.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Elfior.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		889A151D2947C42800725B82 /* ElfiorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElfiorApp.swift; sourceTree = "<group>"; };
+		889A151F2947C42800725B82 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		889A15212947C42900725B82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		889A15242947C42900725B82 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		889A152B2947C51200725B82 /* Scene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Scene.sks; sourceTree = "<group>"; };
+		889A152E2947C53F00725B82 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		889A15302947C6B000725B82 /* SceneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneModel.swift; sourceTree = "<group>"; };
+		889A15332947F18800725B82 /* Landscape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landscape.swift; sourceTree = "<group>"; };
+		889A15352947F25B00725B82 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		889A15372947F2C200725B82 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		889A15392947F2FD00725B82 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
+		889A153B2947FF3E00725B82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		93F4404929436AF600191440 /* Frameworks */ = {
+		889A15172947C42800725B82 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -50,68 +47,75 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		934CDBC629478A9F00E56425 /* GoodFiles */ = {
+		889A15112947C42800725B82 = {
 			isa = PBXGroup;
 			children = (
-				93F4405529436AF600191440 /* GameScene.swift */,
-				934CDBC42947896B00E56425 /* Arrow.swift */,
-				934CDBC229477CF300E56425 /* BackgroundElements.swift */,
-				934CDBC0294771EA00E56425 /* Enemy.swift */,
-				934CDBBE29476D6900E56425 /* Player.swift */,
-			);
-			path = GoodFiles;
-			sourceTree = "<group>";
-		};
-		934CDBC729478AB000E56425 /* BadFiles */ = {
-			isa = PBXGroup;
-			children = (
-				930C342429436D0700AC2AC4 /* Project36Code.swift */,
-				930C342629436D5400AC2AC4 /* TowerDefenseCode.swift */,
-			);
-			path = BadFiles;
-			sourceTree = "<group>";
-		};
-		93F4404329436AF600191440 = {
-			isa = PBXGroup;
-			children = (
-				93F4404E29436AF600191440 /* Elfior */,
-				93F4404D29436AF600191440 /* Products */,
+				889A151C2947C42800725B82 /* Elfior */,
+				889A151B2947C42800725B82 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		93F4404D29436AF600191440 /* Products */ = {
+		889A151B2947C42800725B82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				93F4404C29436AF600191440 /* Elfior.app */,
+				889A151A2947C42800725B82 /* Elfior.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		93F4404E29436AF600191440 /* Elfior */ = {
+		889A151C2947C42800725B82 /* Elfior */ = {
 			isa = PBXGroup;
 			children = (
-				93F4404F29436AF600191440 /* AppDelegate.swift */,
-				93F4405729436AF600191440 /* GameViewController.swift */,
-				934CDBC629478A9F00E56425 /* GoodFiles */,
-				93F4405929436AF600191440 /* Main.storyboard */,
-				93F4405C29436AF600191440 /* Assets.xcassets */,
-				93F4405E29436AF600191440 /* LaunchScreen.storyboard */,
-				934CDBC729478AB000E56425 /* BadFiles */,
-				938B54FF294371540089CC8D /* GameScene.sks */,
+				889A153B2947FF3E00725B82 /* Info.plist */,
+				889A151D2947C42800725B82 /* ElfiorApp.swift */,
+				889A151F2947C42800725B82 /* ContentView.swift */,
+				889A152D2947C51900725B82 /* SpriteKit */,
+				889A15212947C42900725B82 /* Assets.xcassets */,
+				889A15232947C42900725B82 /* Preview Content */,
 			);
 			path = Elfior;
+			sourceTree = "<group>";
+		};
+		889A15232947C42900725B82 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				889A15242947C42900725B82 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		889A152D2947C51900725B82 /* SpriteKit */ = {
+			isa = PBXGroup;
+			children = (
+				889A152B2947C51200725B82 /* Scene.sks */,
+				889A15302947C6B000725B82 /* SceneModel.swift */,
+				889A15322947C6D800725B82 /* Entities */,
+				889A152E2947C53F00725B82 /* Actions.sks */,
+			);
+			path = SpriteKit;
+			sourceTree = "<group>";
+		};
+		889A15322947C6D800725B82 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				889A15332947F18800725B82 /* Landscape.swift */,
+				889A15352947F25B00725B82 /* Player.swift */,
+				889A15372947F2C200725B82 /* Enemy.swift */,
+				889A15392947F2FD00725B82 /* Arrow.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		93F4404B29436AF600191440 /* Elfior */ = {
+		889A15192947C42800725B82 /* Elfior */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 93F4406329436AF600191440 /* Build configuration list for PBXNativeTarget "Elfior" */;
+			buildConfigurationList = 889A15282947C42900725B82 /* Build configuration list for PBXNativeTarget "Elfior" */;
 			buildPhases = (
-				93F4404829436AF600191440 /* Sources */,
-				93F4404929436AF600191440 /* Frameworks */,
-				93F4404A29436AF600191440 /* Resources */,
+				889A15162947C42800725B82 /* Sources */,
+				889A15172947C42800725B82 /* Frameworks */,
+				889A15182947C42800725B82 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -119,25 +123,25 @@
 			);
 			name = Elfior;
 			productName = Elfior;
-			productReference = 93F4404C29436AF600191440 /* Elfior.app */;
+			productReference = 889A151A2947C42800725B82 /* Elfior.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		93F4404429436AF600191440 /* Project object */ = {
+		889A15122947C42800725B82 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
-					93F4404B29436AF600191440 = {
+					889A15192947C42800725B82 = {
 						CreatedOnToolsVersion = 14.1;
 					};
 				};
 			};
-			buildConfigurationList = 93F4404729436AF600191440 /* Build configuration list for PBXProject "Elfior" */;
+			buildConfigurationList = 889A15152947C42800725B82 /* Build configuration list for PBXProject "Elfior" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -145,70 +149,49 @@
 				en,
 				Base,
 			);
-			mainGroup = 93F4404329436AF600191440;
-			productRefGroup = 93F4404D29436AF600191440 /* Products */;
+			mainGroup = 889A15112947C42800725B82;
+			productRefGroup = 889A151B2947C42800725B82 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				93F4404B29436AF600191440 /* Elfior */,
+				889A15192947C42800725B82 /* Elfior */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		93F4404A29436AF600191440 /* Resources */ = {
+		889A15182947C42800725B82 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				938B5500294371540089CC8D /* GameScene.sks in Resources */,
-				93F4405B29436AF600191440 /* Main.storyboard in Resources */,
-				93F4405D29436AF600191440 /* Assets.xcassets in Resources */,
-				93F4406029436AF600191440 /* LaunchScreen.storyboard in Resources */,
+				889A152C2947C51200725B82 /* Scene.sks in Resources */,
+				889A15252947C42900725B82 /* Preview Assets.xcassets in Resources */,
+				889A15222947C42900725B82 /* Assets.xcassets in Resources */,
+				889A152F2947C53F00725B82 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		93F4404829436AF600191440 /* Sources */ = {
+		889A15162947C42800725B82 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				934CDBC329477CF300E56425 /* BackgroundElements.swift in Sources */,
-				934CDBC1294771EA00E56425 /* Enemy.swift in Sources */,
-				93F4405629436AF600191440 /* GameScene.swift in Sources */,
-				93F4405829436AF600191440 /* GameViewController.swift in Sources */,
-				930C342729436D5400AC2AC4 /* TowerDefenseCode.swift in Sources */,
-				93F4405029436AF600191440 /* AppDelegate.swift in Sources */,
-				934CDBBF29476D6900E56425 /* Player.swift in Sources */,
-				930C342529436D0700AC2AC4 /* Project36Code.swift in Sources */,
-				934CDBC52947896B00E56425 /* Arrow.swift in Sources */,
+				889A15312947C6B000725B82 /* SceneModel.swift in Sources */,
+				889A15342947F18800725B82 /* Landscape.swift in Sources */,
+				889A15382947F2C200725B82 /* Enemy.swift in Sources */,
+				889A15202947C42800725B82 /* ContentView.swift in Sources */,
+				889A153A2947F2FD00725B82 /* Arrow.swift in Sources */,
+				889A15362947F25B00725B82 /* Player.swift in Sources */,
+				889A151E2947C42800725B82 /* ElfiorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		93F4405929436AF600191440 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				93F4405A29436AF600191440 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		93F4405E29436AF600191440 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				93F4405F29436AF600191440 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		93F4406129436AF600191440 /* Debug */ = {
+		889A15262947C42900725B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -268,7 +251,7 @@
 			};
 			name = Debug;
 		};
-		93F4406229436AF600191440 /* Release */ = {
+		889A15272947C42900725B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -322,20 +305,19 @@
 			};
 			name = Release;
 		};
-		93F4406429436AF600191440 /* Debug */ = {
+		889A15292947C42900725B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NH485ANM24;
+				DEVELOPMENT_ASSET_PATHS = "\"Elfior/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Elfior/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -343,7 +325,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = academy.2022.mattia.Elfior;
+				PRODUCT_BUNDLE_IDENTIFIER = "Pierpaolo-Siciliano.Elfior";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -351,20 +333,19 @@
 			};
 			name = Debug;
 		};
-		93F4406529436AF600191440 /* Release */ = {
+		889A152A2947C42900725B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = NH485ANM24;
+				DEVELOPMENT_ASSET_PATHS = "\"Elfior/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Elfior/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIRequiresFullScreen = YES;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -372,7 +353,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = academy.2022.mattia.Elfior;
+				PRODUCT_BUNDLE_IDENTIFIER = "Pierpaolo-Siciliano.Elfior";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -383,25 +364,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		93F4404729436AF600191440 /* Build configuration list for PBXProject "Elfior" */ = {
+		889A15152947C42800725B82 /* Build configuration list for PBXProject "Elfior" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				93F4406129436AF600191440 /* Debug */,
-				93F4406229436AF600191440 /* Release */,
+				889A15262947C42900725B82 /* Debug */,
+				889A15272947C42900725B82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		93F4406329436AF600191440 /* Build configuration list for PBXNativeTarget "Elfior" */ = {
+		889A15282947C42900725B82 /* Build configuration list for PBXNativeTarget "Elfior" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				93F4406429436AF600191440 /* Debug */,
-				93F4406529436AF600191440 /* Release */,
+				889A15292947C42900725B82 /* Debug */,
+				889A152A2947C42900725B82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 93F4404429436AF600191440 /* Project object */;
+	rootObject = 889A15122947C42800725B82 /* Project object */;
 }
