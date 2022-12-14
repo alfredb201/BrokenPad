@@ -12,6 +12,8 @@ class Landscape {
     var groundElements: [SKSpriteNode] = []
     var cloudElements: [SKSpriteNode] = []
     var treeElements: [SKSpriteNode] = []
+    var hillElements: [SKSpriteNode] = []
+
     
     var village: SKSpriteNode!
     var firepit: SKSpriteNode!
@@ -195,25 +197,30 @@ class Landscape {
         return HUD
     }
     
-    func addHills(scene: SceneModel) -> SKSpriteNode {
-        let hills = SKSpriteNode(imageNamed: "Hills")
-        hills.position = CGPoint(x: 670, y: groundHeight / 2.5)
-        hills.zPosition = -35
-        hills.name = "hills"
-        
+    func addHill(scene: SceneModel) -> [SKSpriteNode] {
+        for i in 0...1 {
+            let hillTexture = SKTexture(imageNamed: "Hills")
+            let hill = SKSpriteNode(texture: hillTexture)
+            hill.position = CGPoint(x: hill.size.width + (hill.size.width * CGFloat(i)), y: groundHeight / 2.5)
+            hill.zPosition = -35
+            hill.name = "hill"
+            hillElements.append(hill)
+        }
        
-        return hills
+        return hillElements
     }
     
-    func moveFirstHill() {
-        let moveAction = SKAction.move(
-            to: CGPoint(x: -firstHill.size.width, y: groundHeight / 2.5),
-            duration: TimeInterval(30)
-        )
-        let moveActionDone = SKAction.removeFromParent()
-        firstHill.run(SKAction.sequence([moveAction, moveActionDone]))
-    }
-    
+    func moveGround() {
+            enumerateChildNodes(withName: "Ground", using: ({
+                (node, error) in
+                node.position.x -= 2.5
+
+                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
+                if node.position.x < -self.size.width {
+                    node.position = CGPoint(x: self.size.width, y: self.yGround)
+                }
+            }))
+        }
     
     func addHole(scene: SceneModel) -> SKSpriteNode {
         let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Hole"))
