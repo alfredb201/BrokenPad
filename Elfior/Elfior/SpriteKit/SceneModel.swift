@@ -14,7 +14,7 @@ enum PhysicsCategory: UInt32 {
     case nothing = 0b0 // 0
     case ground = 0b1 // 1
     case enemy = 0b10 // 2
-    case pit = 0b100 // 4
+    case trap = 0b100 // 4
     case arrow = 0b1000 // 8
     case player = 0b10000 // 16
 }
@@ -80,7 +80,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
 //                  let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
 //
 //                  player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
-                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
                 }
             default:
                 break
@@ -96,7 +96,10 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(background.createVillage(scene: self))
         addChild(createPlayer(scene: self, groundHeight: background.groundHeight))
         addChild(background.createFirepit())
-        addChild(background.addHills(scene: self))
+        
+        for hill in background.addHill(scene: self) {
+            addChild(hill)
+        }
         for cloud in background.createClouds(scene: self) {
             addChild(cloud)
         }
@@ -119,8 +122,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         movePlayer(groundHeight: background.groundHeight)
         createScore()
         ElfiorRunningAnimation()
-        background.moveFirstHill()
-//        background.startGround()
         
         
         for node in background.backgroundElements {
@@ -148,6 +149,12 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         }
         
+        let trapSpawn = SKAction.sequence([
+            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...10))),
+            SKAction.run {
+                self.addChild(self.background.addTrap(scene: self))
+            }
+        ])
         let enemySpawn = SKAction.sequence([
             enemyCreate,
             SKAction.wait(forDuration: 4),
@@ -164,34 +171,48 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 ))
             }
         ])
-        let hillsSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...5))),
-            SKAction.run {
-                self.addChild(self.background.addHills(scene: self))
-            }
-        ])
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: 6),
             SKAction.group([
                 SKAction.repeatForever(enemySpawn),
                 SKAction.repeatForever(treeSpawn),
-                SKAction.repeatForever(hillsSpawn)
+                SKAction.repeatForever(trapSpawn)
             ])
         ]))
     }
     
-    func moveHills(scene: SceneModel) {
-        scene.enumerateChildNodes(withName: "hill") { node, error in
-            let moveAction = SKAction.move(
-                to: CGPoint(x: -(node.scene?.size.width)!, y: self.groundHeight / 2.5),
-                duration: TimeInterval(30)
-            )
-            let moveActionDone = SKAction.move(to: node.frame.width, duration: 0)
-            node.run(SKAction.sequence([moveAction, moveActionDone]))
-        }
-    }
+//    func moveHills() {
+//        var i = 0
+//            enumerateChildNodes(withName: "hill") { node, error in
+////            let moveAction = SKAction.move(
+////                to: CGPoint(x: -(node.frame.width), y: self.background.groundHeight / 2.5),
+////                duration: 10)
+//            let distance: CGFloat = node.frame.size.width + node.frame.size.width * CGFloat(i)
+//                print("distance: \(distance)")
+//            let duration = TimeInterval(distance / 100)
+//                print("duration: \(duration)")
+//            let hillX = self.frame.size.width + node.frame.size.height / 2 +  CGFloat(i) * node.frame.size.height
+//
+//            let moveAction = SKAction.moveTo(x: -hillX,duration: duration)
+//                let moveActionDone = SKAction.move(to: CGPoint(x: self.frame.size.width + node.frame.size.width, y: self.background.groundHeight / 2.5), duration: 0)
+//
+//            node.run(SKAction.repeatForever(SKAction.sequence([moveAction, moveActionDone])))
+//            i += 1
+//        }
+//    }
 
+    func moveHills() {
+            enumerateChildNodes(withName: "hill", using: ({
+                (node, error) in
+                node.position.x -= 1.5
+
+                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
+                if node.position.x < -self.size.width {
+                    node.position = CGPoint(x: self.size.width + node.frame.width / 1.35, y: self.background.groundHeight / 2.5)
+                }
+            }))
+        }
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
@@ -235,36 +256,17 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             (firstBody.categoryBitMask & PhysicsCategory.arrow.rawValue != 0) &&
             (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0)
         ) {
-            arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)
-            
-            if (secondBody.node?.name == "ogre") {
+            if(arrowCollidesWithEnemy(arrow: firstBody.node as! SKSpriteNode, enemy: secondBody.node as! SKSpriteNode)) {
                 score += 10
-            } else if (
-                secondBody.node?.name == "armoredOgre" ||
-                secondBody.node?.name == "shieldedOgre"
-            ) {
-                score += 20
             }
         } else if (
             (firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
-            (secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0)
+            ((secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0) || (secondBody.categoryBitMask & PhysicsCategory.trap.rawValue != 0))
         ) {
             if (isInvuln == false) {
                 playerGotHit(enemy: secondBody.node as! SKSpriteNode)
             }
         }
-        //        else if (
-        //            (firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
-        //            (secondBody.categoryBitMask & PhysicsCategory.pit.rawValue != 0)
-        //        ) {
-        //            physicsWorld.gravity = CGVectorMake(0.0, -9.8)
-        //            SKAction.wait(forDuration: 5)
-        //
-        //            if let scene = SceneModel(fileNamed: "SceneModel") {
-        //                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-        //                view?.presentScene(scene, transition: transition)
-        //            }
-        //        }
         
         func playerGotHit(enemy: SKSpriteNode) {
             enemy.removeFromParent()
@@ -280,6 +282,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if hasStarted {
+            moveHills()
+        }
         if (isInvuln == true) {
             invulnTime += 0.1
         }

@@ -59,10 +59,27 @@ func shootArrow(scene: SceneModel, _ touches: Set<UITouch>) -> SKSpriteNode {
     return arrow
 }
 
-func arrowCollidesWithEnemy(arrow: SKSpriteNode, enemy: SKSpriteNode) {
-    arrow.removeFromParent()
-    enemy.removeAllActions()
-    enemy.physicsBody?.categoryBitMask = 0
-    enemyDeathAnimation(enemy: enemy)
-    enemy.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+func arrowCollidesWithEnemy(arrow: SKSpriteNode, enemy: SKSpriteNode) -> Bool {
+    if(enemy.name == "ogre"){
+        arrow.removeFromParent()
+        enemy.removeAllActions()
+        enemy.physicsBody?.categoryBitMask = 0
+        enemyDeathAnimation(enemy: enemy)
+        enemy.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
+        
+        return true
+    }
+    else if (enemy.name == "armoredOgre") {
+        enemy.name = "ogre"
+        arrow.removeFromParent()
+        
+        return true
+    }
+    else if (enemy.name == "shieldedOgre") {
+        arrow.removeFromParent()
+        
+        return false
+    }
+    
+    return false
 }

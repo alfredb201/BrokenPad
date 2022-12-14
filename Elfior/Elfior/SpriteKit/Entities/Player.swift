@@ -11,7 +11,6 @@ var elfior: SKSpriteNode!
 
 func createPlayer(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     elfior = SKSpriteNode(texture: SKTexture(imageNamed: "ElfiorIdle1"))
-    elfior.setScale(0.5)
     elfior.position = CGPoint(x: scene.frame.width / 3 - 30, y: groundHeight / 3.5)
     elfior.zPosition = 10
     

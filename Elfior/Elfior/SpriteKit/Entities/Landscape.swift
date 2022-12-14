@@ -107,8 +107,7 @@ class Landscape {
     
     func createFirepit() -> SKSpriteNode {
         firepit = SKSpriteNode(texture: SKTexture(imageNamed: "Firepit"))
-        firepit.setScale(3.0)
-        firepit.position = CGPoint(x: elfior.position.x + 70, y: groundHeight / 2.5)
+        firepit.position = CGPoint(x: elfior.position.x / 2.5, y: groundHeight / 2)
         firepit.zPosition = -15
         
         backgroundElements.append(firepit)
@@ -136,13 +135,13 @@ class Landscape {
         cloud.xScale = Int.random(in: 0...9) < 5 ? cloud.yScale : -cloud.yScale
         cloud.position = CGPoint(
             x: firstClouds ? scene.frame.width * (CGFloat.random(in: 0.0...3.0) / 3) : scene.frame.width + cloudTexture.size().width,
-            y: scene.frame.height * CGFloat.random(in: 0.5...0.9)
+            y: scene.frame.height * CGFloat.random(in: 0.2...0.5)
         )
         cloud.zPosition = -40
         
         let moveLeft = SKAction.move(
             to: CGPoint(x: -cloud.size.width, y: cloud.position.y),
-            duration: cloud.position.x / 10
+            duration: cloud.position.x / 2
         )
         let moveReset = SKAction.removeFromParent()
         let decreaseCloudCounter = SKAction.run {
@@ -201,7 +200,7 @@ class Landscape {
         for i in 0...1 {
             let hillTexture = SKTexture(imageNamed: "Hills")
             let hill = SKSpriteNode(texture: hillTexture)
-            hill.position = CGPoint(x: hill.size.width + (hill.size.width * CGFloat(i)), y: groundHeight / 2.5)
+            hill.position = CGPoint(x: hill.size.width / 2 + (hill.size.width * CGFloat(i)), y: groundHeight / 2.5)
             hill.zPosition = -35
             hill.name = "hill"
             hillElements.append(hill)
@@ -210,35 +209,24 @@ class Landscape {
         return hillElements
     }
     
-    func moveGround() {
-            enumerateChildNodes(withName: "Ground", using: ({
-                (node, error) in
-                node.position.x -= 2.5
-
-                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
-                if node.position.x < -self.size.width {
-                    node.position = CGPoint(x: self.size.width, y: self.yGround)
-                }
-            }))
-        }
     
-    func addHole(scene: SceneModel) -> SKSpriteNode {
-        let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Hole"))
-        hole.position = CGPoint(x: scene.size.width + hole.size.width / 2, y: groundHeight / 2)
+    func addTrap(scene: SceneModel) -> SKSpriteNode {
+        let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Trap"))
+        hole.position = CGPoint(x: scene.size.width + hole.size.width / 2, y: groundHeight / 3.8)
         hole.zPosition = 10
         
         hole.physicsBody = SKPhysicsBody(
             texture: hole.texture!,
             size: CGSize(width: hole.texture!.size().width, height: hole.texture!.size().height)
         )
-        hole.physicsBody?.categoryBitMask = PhysicsCategory.nothing.rawValue
-        hole.physicsBody?.contactTestBitMask = PhysicsCategory.nothing.rawValue
+        hole.physicsBody?.categoryBitMask = PhysicsCategory.trap.rawValue
+        hole.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
         hole.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         hole.physicsBody?.isDynamic = false
                 
         let moveAction = SKAction.move(
-            to: CGPoint(x: -hole.size.width/2, y: groundHeight / 2),
-            duration: TimeInterval(10)
+            to: CGPoint(x: -hole.size.width/2, y: groundHeight / 3.8),
+            duration: 20
         )
         let moveActionDone = SKAction.removeFromParent()
         hole.run(SKAction.sequence([moveAction, moveActionDone]))
