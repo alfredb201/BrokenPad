@@ -31,14 +31,12 @@ extension CGPoint {
 }
 
 func shootArrow(scene: SceneModel, _ touches: Set<UITouch>) -> SKSpriteNode {
-    let touchPosition = touches.first!.location(in: scene)
     let arrow = SKSpriteNode(imageNamed: "Arrow")
     arrow.setScale(5.0)
     arrow.position = elfior.position
-    arrow.position.y = elfior.position.y + 30
     arrow.isHidden = true
     
-    let distance = touchPosition - arrow.position
+    let distance = scene.size.width - arrow.position.x + arrow.size.width
     
     arrow.physicsBody = SKPhysicsBody(circleOfRadius: arrow.size.width / 4)
     arrow.physicsBody?.categoryBitMask = PhysicsCategory.arrow.rawValue
@@ -46,19 +44,16 @@ func shootArrow(scene: SceneModel, _ touches: Set<UITouch>) -> SKSpriteNode {
     arrow.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
     arrow.physicsBody?.isDynamic = true
     arrow.physicsBody?.usesPreciseCollisionDetection = true
+    arrow.physicsBody?.affectedByGravity = false
     
-    let direction = distance.normalized()
-    let maxDistance = direction * 800
-    let realDistance = maxDistance + arrow.position
-    
-    let shootAction = SKAction.move(to: realDistance, duration: 1.0)
-    let rotateAction = SKAction.rotate(toAngle: -(.pi / 4), duration: 3.0)
+    let shootAction = SKAction.move(by: CGVector(dx: distance, dy: CGFloat.random(in: -40...40)), duration: 1.0)
+    let rotateAction = SKAction.rotate(toAngle: -(.pi / 8), duration: 2.0)
     let shootActionDone = SKAction.removeFromParent()
     let showArrow = SKAction.run {
         arrow.isHidden = false
     }
     ElfiorAttackAnimation()
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(220)) {
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(500)) {
         arrow.run(SKAction.sequence([showArrow ,SKAction.group([shootAction, rotateAction]), shootActionDone]))
     }
     return arrow
