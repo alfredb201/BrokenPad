@@ -89,14 +89,14 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     }
     
     func createBackground() {
-        for ground in background.createGround() {
+        for ground in background.createGround(){
             addChild(ground)
         }
         addChild(background.createSky(scene: self))
         addChild(background.createVillage(scene: self))
         addChild(createPlayer(scene: self, groundHeight: background.groundHeight))
         addChild(background.createFirepit())
-        
+        addChild(background.addHills(scene: self, hasStarted: false))
         for cloud in background.createClouds(scene: self) {
             addChild(cloud)
         }
@@ -119,12 +119,14 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         movePlayer(groundHeight: background.groundHeight)
         createScore()
         ElfiorRunningAnimation()
-        background.startGround()
+        background.moveFirstHill()
+//        background.startGround()
         let holeSpawn = SKAction.run {
 //            if (Int.random(in: 0...9) < 2) {
 //
 //            }
         }
+<<<<<<< Updated upstream
         let movingGroundSpawn = SKAction.sequence([
             SKAction.run {
                 if (Int.random(in: 0...9) > 2) {
@@ -139,6 +141,8 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ])
         run(SKAction.repeatForever(movingGroundSpawn))
         
+=======
+>>>>>>> Stashed changes
         for node in background.backgroundElements {
             let time = node.name == "ground" ? node.position.x / 100 : node.position.x / 100
             let isVillage = node.name == "village"
@@ -163,9 +167,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 print("An error occurred while declaring enemyCreate")
             }
         }
-        let holeCreate = SKAction.run {
-            self.addChild(self.background.addHole(scene: self))
-        }
+        
         let enemySpawn = SKAction.sequence([
             enemyCreate,
             SKAction.wait(forDuration: 4),
@@ -183,9 +185,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         ])
         let hillsSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...10))),
+            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...5))),
             SKAction.run {
-                self.addChild(self.background.addHills(scene: self))
+                self.addChild(self.background.addHills(scene: self, hasStarted: true))
             }
         ])
         

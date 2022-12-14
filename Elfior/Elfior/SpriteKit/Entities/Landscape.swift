@@ -20,6 +20,7 @@ class Landscape {
     
     var groundHeight: CGFloat = 0.0
     let numberOfClouds = Int.random(in: 7...12)
+    var firstHill : SKSpriteNode!
     
     func createSky(scene: SceneModel) -> SKSpriteNode {
         let sky = SKSpriteNode(
@@ -36,10 +37,7 @@ class Landscape {
     func createVillage(scene: SceneModel) -> SKSpriteNode {
         village = SKSpriteNode(imageNamed: "Village")
         village.name = "village"
-        village.xScale = 0.9
-        village.yScale = 0.9
-        village.anchorPoint = CGPoint.zero
-        village.position = CGPoint(x: scene.size.width/20, y: groundHeight / 4.0)
+        village.position = CGPoint(x: scene.size.width / 2, y: groundHeight / 2)
         village.zPosition = -20
         backgroundElements.append(village)
         
@@ -47,7 +45,7 @@ class Landscape {
     }
     
     func createGround() -> [SKSpriteNode] {
-        for i in 0...3 {
+        for i in 0...1{
             let ground = SKSpriteNode(texture: SKTexture(imageNamed: "GameGround"))
             ground.name = "ground"
             ground.position = CGPoint(
@@ -65,44 +63,45 @@ class Landscape {
         }
         return groundElements
     }
+//
+//    func createMovingGround(scene: SceneModel) -> SKSpriteNode {
+//        let ground = SKSpriteNode(texture: SKTexture(imageNamed: "GameGround"))
+//        ground.position = CGPoint(
+//            x: 0,
+//            y: 0
+//        )
+//        ground.setScale(1/3)
+//        ground.zPosition = 0
+//
+//        ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
+//        ground.physicsBody?.categoryBitMask = PhysicsCategory.ground.rawValue
+//        ground.physicsBody?.isDynamic = false
+//
+//        let moveLeft = SKAction.move(to: CGPoint(x: -ground.size.width, y: ground.position.y), duration: 10)
+//        let moveReset = SKAction.removeFromParent()
+//        let moveLoop = SKAction.sequence([moveLeft, moveReset])
+//        ground.run(moveLoop)
+//
+//        return ground
+//    }
     
-    func createMovingGround(scene: SceneModel) -> SKSpriteNode {
-        let ground = SKSpriteNode(texture: SKTexture(imageNamed: "GameGround"))
-        ground.position = CGPoint(
-            x: scene.frame.width + ground.size.width,
-            y: ground.texture!.size().height / 2
-        )
-        ground.zPosition = 0
-        
-        ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
-        ground.physicsBody?.categoryBitMask = PhysicsCategory.ground.rawValue
-        ground.physicsBody?.isDynamic = false
-        
-        let moveLeft = SKAction.move(to: CGPoint(x: -ground.size.width, y: ground.position.y), duration: 10)
-        let moveReset = SKAction.removeFromParent()
-        let moveLoop = SKAction.sequence([moveLeft, moveReset])
-        ground.run(moveLoop)
-        
-        return ground
-    }
+//    func startGround() {
+//        for groundElement in groundElements {
+//            let moveLeft = SKAction.move(
+//                to: CGPoint(x: -groundElement.size.width, y: groundElement.position.y),
+//                duration: 10
+//            )
+//            let moveReset = SKAction.removeFromParent()
+//            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+//            groundElement.run(moveLoop)
+//        }
+//    }
     
-    func startGround() {
-        for groundElement in groundElements {
-            let moveLeft = SKAction.move(
-                to: CGPoint(x: -groundElement.size.width, y: groundElement.position.y),
-                duration: 10
-            )
-            let moveReset = SKAction.removeFromParent()
-            let moveLoop = SKAction.sequence([moveLeft, moveReset])
-            groundElement.run(moveLoop)
-        }
-    }
-    
-    func stopGround() {
-        for groundElement in groundElements {
-            groundElement.removeAllActions()
-        }
-    }
+//    func stopGround() {
+//        for groundElement in groundElements {
+//            groundElement.removeAllActions()
+//        }
+//    }
     
     func createFirepit() -> SKSpriteNode {
         firepit = SKSpriteNode(texture: SKTexture(imageNamed: "Firepit"))
@@ -130,8 +129,7 @@ class Landscape {
     
     func createSingleCloud(scene: SceneModel, firstClouds: Bool) -> SKSpriteNode {
         let cloudTexture = SKTexture(imageNamed: "Cloud")
-        let cloudsTexture = SKTexture(imageNamed: "Clouds")
-        let cloud = SKSpriteNode(texture: Int.random(in: 0...9) < 5 ? cloudTexture : cloudsTexture)
+        let cloud = SKSpriteNode(texture: cloudTexture)
         cloud.yScale = CGFloat.random(in: 1.0...3.0)
         cloud.xScale = Int.random(in: 0...9) < 5 ? cloud.yScale : -cloud.yScale
         cloud.position = CGPoint(
@@ -162,17 +160,19 @@ class Landscape {
     }
     
     func createSingleTree(scene: SceneModel, iterator: Int?, hasStarted: Bool) -> SKSpriteNode {
-        let tree = SKSpriteNode(texture: SKTexture(imageNamed: "Tree"))
         
         if (!hasStarted) {
-            tree.setScale(3.0)
-            tree.position = CGPoint(x: scene.frame.width * (0.1 * CGFloat(iterator!)), y: groundHeight / 2.5)
+            let tree = SKSpriteNode(texture: iterator! % 2 == 1 ? SKTexture(imageNamed: "Tree") : SKTexture(imageNamed: "Tree2"))
+            tree.position = CGPoint(x: scene.frame.width * (0.1 * CGFloat(iterator!)), y: iterator! % 2 == 1 ? groundHeight / 2.1 : groundHeight / 2.8)
             tree.zPosition = -30
             
             backgroundElements.append(tree)
+            return tree
+
         } else {
-            tree.setScale(CGFloat.random(in: 0.5...4.0))
-            tree.position = CGPoint(x: scene.frame.width + 200, y: groundHeight / 2.5)
+            let treePosition = Int.random(in: 0...1)
+            let tree = SKSpriteNode(texture: treePosition % 2 == 1 ? SKTexture(imageNamed: "Tree") : SKTexture(imageNamed: "Tree2"))
+            tree.position = CGPoint(x: scene.frame.width + 200, y: treePosition % 2 == 1 ? groundHeight / 2.1 : groundHeight / 2.8 )
             tree.zPosition = -30
             
             let moveLeft = SKAction.move(
@@ -182,8 +182,9 @@ class Landscape {
             let moveReset = SKAction.removeFromParent()
             let moveLoop = SKAction.sequence([moveLeft, moveReset])
             tree.run(moveLoop)
+            return tree
+
         }
-        return tree
     }
     
     func createHUD(scene: SceneModel) -> SKSpriteNode {
@@ -196,19 +197,23 @@ class Landscape {
     
     func addHills(scene: SceneModel) -> SKSpriteNode {
         let hills = SKSpriteNode(imageNamed: "Hills")
-        hills.setScale(CGFloat.random(in: 5.0...8.0))
-        hills.position = CGPoint(x: scene.size.width + 200, y: groundHeight / 2.5)
+        hills.position = CGPoint(x: 670, y: groundHeight / 2.5)
         hills.zPosition = -35
+        hills.name = "hills"
         
-        let moveAction = SKAction.move(
-            to: CGPoint(x: -hills.size.width/2, y: groundHeight / 2.5),
-            duration: TimeInterval(hills.position.x / 20)
-        )
-        let moveActionDone = SKAction.removeFromParent()
-        hills.run(SKAction.sequence([moveAction, moveActionDone]))
-        
+       
         return hills
     }
+    
+    func moveFirstHill() {
+        let moveAction = SKAction.move(
+            to: CGPoint(x: -firstHill.size.width, y: groundHeight / 2.5),
+            duration: TimeInterval(30)
+        )
+        let moveActionDone = SKAction.removeFromParent()
+        firstHill.run(SKAction.sequence([moveAction, moveActionDone]))
+    }
+    
     
     func addHole(scene: SceneModel) -> SKSpriteNode {
         let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Hole"))
@@ -223,7 +228,7 @@ class Landscape {
         hole.physicsBody?.contactTestBitMask = PhysicsCategory.nothing.rawValue
         hole.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         hole.physicsBody?.isDynamic = false
-        
+                
         let moveAction = SKAction.move(
             to: CGPoint(x: -hole.size.width/2, y: groundHeight / 2),
             duration: TimeInterval(10)

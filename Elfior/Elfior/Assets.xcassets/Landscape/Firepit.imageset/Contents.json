@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "Firepit.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -10,6 +9,7 @@
       "scale" : "2x"
     },
     {
+      "filename" : "Fuoco Repix.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

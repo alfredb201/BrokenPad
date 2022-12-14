@@ -16,6 +16,7 @@ struct ElfiorApp: App {
                     width: UIScreen.main.bounds.width,
                     height: UIScreen.main.bounds.height
                 )
+                
         }
     }
 }
