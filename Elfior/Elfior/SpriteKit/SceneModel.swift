@@ -75,19 +75,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         if (sender.state == .ended) {
             switch sender.direction {
             case .up:
-<<<<<<< Updated upstream
-                if (elfior.action(forKey: "jump") == nil) {
-                    //                  check that there's no jump action running
-                    //                  let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
-                    //                  let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
-                    //
-                    //                  player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
-                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
-=======
                 if (elfior.position.y < background.groundHeight / 3.5) {
 //                  check that there's no jump action running
                     elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
->>>>>>> Stashed changes
                 }
             default:
                 break
@@ -197,7 +187,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ]))
     }
     
-<<<<<<< Updated upstream
     func moveGround() {
         enumerateChildNodes(withName: "ground", using: ({
             (node, error) in
@@ -217,19 +206,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         }))
     }
-=======
-
-    func moveHills() {
-            enumerateChildNodes(withName: "hill", using: ({
-                (node, error) in
-                node.position.x -= 1.5
-                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
-                if node.position.x < -self.size.width {
-                    node.position.x = self.size.width + node.frame.width / 1.35
-                }
-            }))
-        }
->>>>>>> Stashed changes
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
