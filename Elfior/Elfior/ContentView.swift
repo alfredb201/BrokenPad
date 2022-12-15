@@ -13,9 +13,11 @@ struct ContentView: View {
     
     var body: some View {
         SpriteView(scene: self.scene, debugOptions: [
-//            .showsDrawCount,
-//            .showsFPS,
-//            .showsNodeCount
+            .showsDrawCount,
+            .showsFPS,
+            .showsNodeCount
+                
+            
         ])
         .ignoresSafeArea()
     }

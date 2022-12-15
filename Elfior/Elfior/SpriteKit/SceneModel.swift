@@ -42,6 +42,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     var jumpButton: SKSpriteNode!
     var shootButton: SKSpriteNode!
     var scoreLabel: SKLabelNode!
+    var gameOver: SKSpriteNode!
+    var retryButton: SKSpriteNode!
+    
     var gameState = GameState.showingLogo
     var playerLives: Int = 3 {
         didSet {
@@ -65,10 +68,13 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     let arrowSound: SKAudioNode = SKAudioNode(fileNamed: "ArrowSound.mp3")
     let jumpSound: SKAudioNode = SKAudioNode(fileNamed: "MarioJumpSound.wav")
     
+    
     override func didMove(to view: SKView) {
         physicsWorld.gravity = CGVectorMake(0.0, -9.8)
         physicsWorld.contactDelegate = self
         setStartLabel()
+        setGameOver()
+        setRetryButton()
         createBackground()
         
         addChild(backgroundSound)
@@ -156,6 +162,23 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(shootButtonHitArea)
     }
     
+    func setGameOver() {
+        gameOver = SKSpriteNode(imageNamed: "GameOver")
+        gameOver.position = CGPoint(x: frame.midX, y: frame.midY - 170)
+        gameOver.zPosition = 10
+        gameOver.isHidden = true
+        addChild(gameOver)
+    }
+    
+    func setRetryButton() {
+        retryButton = SKSpriteNode(imageNamed: "Retry")
+        retryButton.name = "retryButton"
+        retryButton.position = CGPoint(x: frame.midX, y: frame.midY * 1.5)
+        retryButton.zPosition = 10
+        retryButton.isHidden = true
+        addChild(retryButton)
+    }
+    
     func startGame() {
         hasStarted = true
         startLabel.isHidden = true
@@ -190,7 +213,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             case 0...3:
                 self.addChild(addOgre(scene: self, groundHeight: self.background.groundHeight))
             case 4...6:
-                self.addChild(addShieldedOgre(scene: self, groundHeight: self.background.groundHeight))
+                let shieldedOgre = addShieldedOgre(scene: self, groundHeight: self.background.groundHeight)
+                self.addChild(shieldedOgre.0)
+                self.addChild(shieldedOgre.1)
             case 7...9:
                 self.addChild(addArmoredOgre(scene: self, groundHeight: self.background.groundHeight))
             default:
@@ -201,7 +226,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         let trapSpawn = SKAction.sequence([
             SKAction.wait(forDuration: TimeInterval(Double.random(in: 10...15))),
             SKAction.run {
-                self.addChild(self.background.addTrap(scene: self))
+                let trap = self.background.addTrap(scene: self)
+                self.addChild(trap.0)
+                self.addChild(trap.1)
             }
         ])
         let enemySpawn = SKAction.sequence([
@@ -277,6 +304,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 if (elfior.position.y < background.groundHeight / 3.5) {
                     
                     //                  check that there's no jump action running
+                    
                     run(SKAction.playSoundFileNamed("MarioJumpSound", waitForCompletion: false))
                     elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
                     
@@ -294,9 +322,13 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 run(shootArrowAction)
             }
         case .dead:
-            if let scene = SceneModel(fileNamed: "SceneModel") {
-                let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                view?.presentScene(scene, transition: transition)
+            let location = touches.first!.location(in: self)
+            let touchedNode = atPoint(location)
+            if touchedNode.name == "retryButton" {
+                if let scene = SceneModel(fileNamed: "Scene") {
+                    let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+                    view?.presentScene(scene, transition: transition)
+                }
             }
         }
     }
@@ -324,34 +356,41 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             (firstBody.categoryBitMask & PhysicsCategory.player.rawValue != 0) &&
             ((secondBody.categoryBitMask & PhysicsCategory.enemy.rawValue != 0) || (secondBody.categoryBitMask & PhysicsCategory.trap.rawValue != 0))
         ) {
-            if (isInvuln == false) {
-                playerGotHit(enemy: secondBody.node as! SKSpriteNode)
-            }
-        }
-        
-        func playerGotHit(enemy: SKSpriteNode) {
-            ElfiorHitAnimation()
-            playerLives -= 1
-            print("si\(playerLives)")
-            if (playerLives < 1) {
-                if let scene = SceneModel(fileNamed: "Scene") {
-                    let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                    view?.presentScene(scene, transition: transition)
+            if(secondBody.node?.name == "trapScore" || secondBody.node?.name == "shieldedOgreScore"){
+                secondBody.categoryBitMask = PhysicsCategory.nothing.rawValue
+                let scoreAction = SKAction.run {
+                    self.score += 15
                 }
-                //                if let scene = SceneModel(fileNamed: "SceneModel") {
-                //                    let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
-                //                    view?.presentScene(scene, transition: transition)
-                //                }
-                self.removeAllChildren()
-                self.removeAllActions()
-                self.scene?.removeFromParent()
-                self.isPaused = true
-                isInvuln = true
-                ElfiorRunningAnimation()
-                
+                run(SKAction.sequence([SKAction.wait(forDuration: 1), scoreAction]))
+            }
+            else{
+                if (isInvuln == false) {
+                    playerGotHit(enemy: secondBody.node as! SKSpriteNode)
+                }
             }
         }
     }
+    
+    
+        func playerGotHit(enemy: SKSpriteNode) {
+            ElfiorHitAnimation()
+            playerLives -= 1
+            if (playerLives < 1) {
+                gameState = .dead
+                let deathDelay = SKAction.run {
+                    ElfiorDeathAnimation()
+                }
+                let deathAction = SKAction.run {
+                    self.isPaused = true
+                    self.gameOver.isHidden = false
+                    self.retryButton.isHidden = false
+                }
+                run(SKAction.sequence([deathDelay, SKAction.wait(forDuration: 2), deathAction]))
+            }
+            isInvuln = true
+            ElfiorRunningAnimation()
+        }
+    
         
         override func update(_ currentTime: TimeInterval) {
             if hasStarted {

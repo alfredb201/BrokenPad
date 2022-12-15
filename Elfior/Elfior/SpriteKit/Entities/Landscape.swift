@@ -187,7 +187,7 @@ class Landscape {
         return hillElements
     }
     
-    func addTrap(scene: SceneModel) -> SKSpriteNode {
+    func addTrap(scene: SceneModel) -> (SKSpriteNode, SKShapeNode) {
         let trap = SKSpriteNode(texture: SKTexture(imageNamed: "Trap"))
         trap.position = CGPoint(x: scene.size.width + trap.size.width / 2, y: groundHeight / 3.7)
         trap.zPosition = 10
@@ -201,13 +201,26 @@ class Landscape {
         trap.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
         trap.physicsBody?.isDynamic = false
                 
-        let moveAction = SKAction.move(
-            to: CGPoint(x: -trap.size.width/2, y: groundHeight / 3.8),
-            duration: 5
+        let trapScoreHitArea = SKShapeNode(rectOf: CGSize(width: 10, height: 10))
+        trapScoreHitArea.position = CGPoint(x: trap.position.x, y: trap.position.y + 150)
+        trapScoreHitArea.name = "trapScore"
+        trapScoreHitArea.fillColor = UIColor.clear
+        trapScoreHitArea.strokeColor = UIColor.clear
+        trapScoreHitArea.zPosition = 10
+        
+        trapScoreHitArea.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 1, height: 300)
         )
+        trapScoreHitArea.physicsBody?.categoryBitMask = PhysicsCategory.trap.rawValue
+        trapScoreHitArea.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
+        trapScoreHitArea.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
+        trapScoreHitArea.physicsBody?.isDynamic = false
+        
+        let moveAction = SKAction.moveTo(x: -trap.size.width, duration: 5)
+        
         let moveActionDone = SKAction.removeFromParent()
         trap.run(SKAction.sequence([moveAction, moveActionDone]))
-        
-        return trap
+        trapScoreHitArea.run(SKAction.sequence([moveAction, moveActionDone]))
+
+        return (trap, trapScoreHitArea)
     }
 }

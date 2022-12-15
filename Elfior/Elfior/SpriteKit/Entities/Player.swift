@@ -107,6 +107,28 @@ func ElfiorHitAnimation() {
     
     elfior.run(hitAnimation, withKey: "ElfiorIdleAnimation")
 }
+
+func ElfiorDeathAnimation() {
+    var playerAtlas: SKTextureAtlas {
+        return SKTextureAtlas(named: "ElfiorDeath")
+    }
+    var playerDeathTextures: [SKTexture] {
+        return [
+            playerAtlas.textureNamed("ElfiorDeath1"),
+            playerAtlas.textureNamed("ElfiorDeath2"),
+            playerAtlas.textureNamed("ElfiorDeath3"),
+            playerAtlas.textureNamed("ElfiorDeath4"),
+            playerAtlas.textureNamed("ElfiorDeath5"),
+            playerAtlas.textureNamed("ElfiorDeath6"),
+            playerAtlas.textureNamed("ElfiorDeath7"),
+            playerAtlas.textureNamed("ElfiorDeath8")
+        ]
+    }
+    let deathAnimation = SKAction.animate(with: playerDeathTextures, timePerFrame: 0.3)
+    
+    elfior.run(deathAnimation, withKey: "ElfiorDeathAnimation")
+}
+
 func movePlayer(groundHeight: CGFloat) {
     elfior.run(SKAction.moveBy(x: -100, y: 0, duration: 3.0))
     elfior.physicsBody?.isDynamic = true

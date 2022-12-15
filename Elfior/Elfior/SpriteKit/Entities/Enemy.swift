@@ -31,7 +31,7 @@ func addOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     
     let moveAction = SKAction.move(
         to: CGPoint(x: -ogre.size.width/2, y: groundHeight / 3.5),
-        duration: TimeInterval(CGFloat.random(in: 5.0...7.0))
+        duration: TimeInterval(CGFloat.random(in: 3.0...5.0))
     )
     let moveActionDone = SKAction.removeFromParent()
     let moveAnimation = SKAction.run {
@@ -42,7 +42,7 @@ func addOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     return ogre
 }
 
-func addShieldedOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
+func addShieldedOgre(scene: SceneModel, groundHeight: CGFloat) -> (SKSpriteNode, SKShapeNode) {
     shieldedOgre = SKSpriteNode(imageNamed: "ShieldedOgreWalk1")
     shieldedOgre.name = "shieldedOgre"
     shieldedOgre.setScale(0.3)
@@ -58,17 +58,29 @@ func addShieldedOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     shieldedOgre.physicsBody?.collisionBitMask = PhysicsCategory.arrow.rawValue
     shieldedOgre.physicsBody?.isDynamic = false
     
-    let moveAction = SKAction.move(
-        to: CGPoint(x: -shieldedOgre.size.width/2, y: groundHeight / 3.5),
-        duration: TimeInterval(CGFloat.random(in: 5.0...7.0))
+    let ogreScoreHitArea = SKShapeNode(rectOf: CGSize(width: 10, height: 10))
+    ogreScoreHitArea.position = CGPoint(x: shieldedOgre.position.x, y: shieldedOgre.position.y + 150)
+    ogreScoreHitArea.name = "shieldedOgreScore"
+    ogreScoreHitArea.fillColor = UIColor.clear
+    ogreScoreHitArea.strokeColor = UIColor.clear
+    ogreScoreHitArea.zPosition = 10
+    
+    ogreScoreHitArea.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 1, height: 300)
     )
+    ogreScoreHitArea.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
+    ogreScoreHitArea.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
+    ogreScoreHitArea.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
+    ogreScoreHitArea.physicsBody?.isDynamic = false
+    
+    let moveAction = SKAction.moveTo(x: -shieldedOgre.size.width / 2, duration: TimeInterval(CGFloat.random(in: 3.0...5.0)))
     let moveActionDone = SKAction.removeFromParent()
     let moveAnimation = SKAction.run {
         shieldedOgreWalkAnimation(enemy: shieldedOgre)
     }
     shieldedOgre.run(SKAction.sequence([moveAnimation, moveAction, moveActionDone]))
+    ogreScoreHitArea.run(SKAction.sequence([moveAction, moveActionDone]))
     
-    return shieldedOgre
+    return (shieldedOgre, ogreScoreHitArea)
 }
 
 func addArmoredOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
