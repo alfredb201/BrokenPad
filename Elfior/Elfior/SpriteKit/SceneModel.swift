@@ -76,7 +76,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             switch sender.direction {
             case .up:
                 if (elfior.position.y < background.groundHeight / 3.5) {
-//                  check that there's no jump action running
                     elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
                 }
             default:
@@ -206,10 +205,6 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         }))
     }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
@@ -277,7 +272,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             enemy.removeFromParent()
             playerLives -= 1
             if (playerLives < 1) {
-                if let scene = SceneModel(fileNamed: "SceneModel") {
+                if let scene = SceneModel(fileNamed: "Scene") {
                     let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
                     view?.presentScene(scene, transition: transition)
                 }
