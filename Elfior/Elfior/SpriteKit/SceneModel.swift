@@ -38,7 +38,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             run(cloudSpawn)
         }
     }
-    var startLabel: SKLabelNode!
+    var startLabel: SKSpriteNode!
     var scoreLabel: SKLabelNode!
     var gameState = GameState.showingLogo
     var playerLives: Int = 3 {
@@ -95,6 +95,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ElfiorIdleAnimation()
         addChild(background.createFirepit())
         addChild(background.createMoon(scene: self))
+        addChild(background.createLogo(scene: self))
         for hill in background.addHill(scene: self) {
             addChild(hill)
         }
@@ -107,16 +108,15 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     }
     
     func setStartLabel() {
-        startLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
-        startLabel.text = "Tap to begin"
-        startLabel.fontSize = 40
-        startLabel.position = CGPoint(x: frame.midX, y: frame.midY + 30)
-        startLabel.fontColor = UIColor.black
+        startLabel = SKSpriteNode(imageNamed: "TapToStart")
+        startLabel.position = CGPoint(x: frame.midX, y: frame.midY - 170)
+        startLabel.zPosition = 10
         addChild(startLabel)
     }
     
     func startGame() {
         hasStarted = true
+        startLabel.isHidden = true
         movePlayer(groundHeight: background.groundHeight)
         createScore()
         ElfiorRunningAnimation()
@@ -167,7 +167,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             SKAction.wait(forDuration: TimeInterval(Int.random(in:5...7)))
         ])
         let treeSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 3...12))),
+            SKAction.wait(forDuration: TimeInterval(Double.random(in: 3...6))),
             SKAction.run {
                 self.addChild(self.background.createSingleTree(
                     scene: self,
@@ -206,6 +206,10 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         }))
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")

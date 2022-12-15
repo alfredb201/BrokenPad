@@ -21,6 +21,7 @@ class Landscape {
     var sky: SKSpriteNode!
     var HUD: SKSpriteNode!
     var moon: SKSpriteNode!
+    var logo: SKSpriteNode!
 
     var groundHeight: CGFloat = 0.0
     let numberOfClouds = Int.random(in: 7...12)
@@ -30,7 +31,7 @@ class Landscape {
         let sky = SKSpriteNode(texture: SKTexture(imageNamed: "Sky"))
         sky.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sky.position = CGPoint(x: scene.frame.midX, y: scene.frame.midY)
-        sky.zPosition = -40
+        sky.zPosition = -45
         
         return sky
     }
@@ -162,8 +163,16 @@ class Landscape {
     func createMoon(scene: SceneModel) -> SKSpriteNode {
         moon = SKSpriteNode(texture: SKTexture(imageNamed: "Moon"))
         moon.position = CGPoint(x: scene.size.width * 0.5, y: scene.size.height * 0.5)
-        
+        moon.zPosition = -40
         return moon
+    }
+    
+    func createLogo(scene: SceneModel) -> SKSpriteNode {
+        logo = SKSpriteNode(texture: SKTexture(imageNamed: "Gamelogo"))
+        logo.position = CGPoint(x: scene.frame.midX, y: scene.frame.midY * 1.5)
+        backgroundElements.append(logo)
+
+        return logo
     }
     
     func addHill(scene: SceneModel) -> [SKSpriteNode] {
