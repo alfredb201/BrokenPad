@@ -18,6 +18,10 @@
 		889A15362947F25B00725B82 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15352947F25B00725B82 /* Player.swift */; };
 		889A15382947F2C200725B82 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15372947F2C200725B82 /* Enemy.swift */; };
 		889A153A2947F2FD00725B82 /* Arrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889A15392947F2FD00725B82 /* Arrow.swift */; };
+		936F1525294B79DC00D5B6B0 /* HumanJumpSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 936F1524294B79DC00D5B6B0 /* HumanJumpSound.wav */; };
+		936F1527294B79E500D5B6B0 /* MarioJumpSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 936F1526294B79E500D5B6B0 /* MarioJumpSound.wav */; };
+		936F1529294B79F000D5B6B0 /* ArrowSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 936F1528294B79F000D5B6B0 /* ArrowSound.mp3 */; };
+		936F152B294B79FA00D5B6B0 /* ElfiorTheme.wav in Resources */ = {isa = PBXBuildFile; fileRef = 936F152A294B79FA00D5B6B0 /* ElfiorTheme.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,10 @@
 		889A15372947F2C200725B82 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
 		889A15392947F2FD00725B82 /* Arrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrow.swift; sourceTree = "<group>"; };
 		889A153B2947FF3E00725B82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		936F1524294B79DC00D5B6B0 /* HumanJumpSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = HumanJumpSound.wav; sourceTree = "<group>"; };
+		936F1526294B79E500D5B6B0 /* MarioJumpSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MarioJumpSound.wav; sourceTree = "<group>"; };
+		936F1528294B79F000D5B6B0 /* ArrowSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ArrowSound.mp3; sourceTree = "<group>"; };
+		936F152A294B79FA00D5B6B0 /* ElfiorTheme.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ElfiorTheme.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +97,7 @@
 			children = (
 				889A152B2947C51200725B82 /* Scene.sks */,
 				889A15302947C6B000725B82 /* SceneModel.swift */,
+				936F1523294B79CB00D5B6B0 /* Audio */,
 				889A15322947C6D800725B82 /* Entities */,
 				889A152E2947C53F00725B82 /* Actions.sks */,
 			);
@@ -104,6 +113,17 @@
 				889A15392947F2FD00725B82 /* Arrow.swift */,
 			);
 			path = Entities;
+			sourceTree = "<group>";
+		};
+		936F1523294B79CB00D5B6B0 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				936F152A294B79FA00D5B6B0 /* ElfiorTheme.wav */,
+				936F1526294B79E500D5B6B0 /* MarioJumpSound.wav */,
+				936F1528294B79F000D5B6B0 /* ArrowSound.mp3 */,
+				936F1524294B79DC00D5B6B0 /* HumanJumpSound.wav */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,9 +185,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				889A152C2947C51200725B82 /* Scene.sks in Resources */,
+				936F1529294B79F000D5B6B0 /* ArrowSound.mp3 in Resources */,
+				936F1527294B79E500D5B6B0 /* MarioJumpSound.wav in Resources */,
 				889A15252947C42900725B82 /* Preview Assets.xcassets in Resources */,
 				889A15222947C42900725B82 /* Assets.xcassets in Resources */,
 				889A152F2947C53F00725B82 /* Actions.sks in Resources */,
+				936F1525294B79DC00D5B6B0 /* HumanJumpSound.wav in Resources */,
+				936F152B294B79FA00D5B6B0 /* ElfiorTheme.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -139,6 +139,21 @@ func ogreWalkAnimation(enemy: SKSpriteNode!) {
     enemy.run(SKAction.repeatForever(ogreWalkAnimation), withKey: "OgreWalkAnimation")
 }
 
+func ogreAttackAnimation(enemy: SKSpriteNode!) {
+    let atlas = SKTextureAtlas(named: "BasicAttack")
+    let ogreAttackAnimation = SKAction.animate(
+        with: [
+            atlas.textureNamed("OgreAttack1"),
+            atlas.textureNamed("OgreAttack2"),
+            atlas.textureNamed("OgreAttack3"),
+            atlas.textureNamed("OgreAttack4"),
+            atlas.textureNamed("OgreAttack5")
+        ],
+        timePerFrame: 0.1)
+    
+    enemy.run(SKAction.repeatForever(ogreAttackAnimation), withKey: "OgreAttackAnimation")
+}
+
 func shieldedOgreWalkAnimation(enemy: SKSpriteNode!) {
     let atlas = SKTextureAtlas(named: "ShieldedWalk")
     let shieldedWalkAnimation = SKAction.animate(

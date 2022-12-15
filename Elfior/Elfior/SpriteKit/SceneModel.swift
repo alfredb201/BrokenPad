@@ -39,6 +39,8 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }
     }
     var startLabel: SKSpriteNode!
+    var jumpButton: SKSpriteNode!
+    var shootButton: SKSpriteNode!
     var scoreLabel: SKLabelNode!
     var gameState = GameState.showingLogo
     var playerLives: Int = 3 {
@@ -59,6 +61,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     var timeGroundSpawn = 1.0
     var isShooting: Bool = false
     var attackDelay: TimeInterval = 0
+    let backgroundSound = SKAudioNode(fileNamed: "ElfiorTheme.wav")
+    let arrowSound: SKAudioNode = SKAudioNode(fileNamed: "ArrowSound.mp3")
+    let jumpSound: SKAudioNode = SKAudioNode(fileNamed: "MarioJumpSound.wav")
     
     override func didMove(to view: SKView) {
         physicsWorld.gravity = CGVectorMake(0.0, -9.8)
@@ -66,23 +71,24 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         setStartLabel()
         createBackground()
         
-        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender:)))
-        upSwipe.direction = .up
-        view.addGestureRecognizer(upSwipe)
+        addChild(backgroundSound)
+        
+        //        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender:)))
+        //        upSwipe.direction = .up
+        //        view.addGestureRecognizer(upSwipe)
     }
     
-    @objc func handleSwipe(sender: UISwipeGestureRecognizer) {
-        if (sender.state == .ended) {
-            switch sender.direction {
-            case .up:
-                if (elfior.position.y < background.groundHeight / 3.5) {
-                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
-                }
-            default:
-                break
-            }
-        }
-    }
+    
+    //    @objc func handleSwipe(sender: UISwipeGestureRecognizer) {
+    //        if (sender.state == .ended) {
+    //            switch sender.direction {
+    //            case .up:
+    //
+    //            default:
+    //                break
+    //            }
+    //        }
+    //    }
     
     func createBackground() {
         for ground in background.createGround(){
@@ -113,11 +119,50 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(startLabel)
     }
     
+    func setJumpButton() {
+        
+        
+        jumpButton = SKSpriteNode(imageNamed: "JumpButton")
+        jumpButton.position = CGPoint(x: frame.width * 0.1, y: frame.height * 0.075)
+        jumpButton.setScale(2.0)
+        jumpButton.zPosition = 15
+        
+        let jumpButtonHitArea = SKShapeNode(rectOf: CGSize(width: 200, height: 300))
+        jumpButtonHitArea.position = jumpButton.position
+        jumpButtonHitArea.name = "jumpButton"
+        jumpButtonHitArea.fillColor = UIColor.clear
+        jumpButtonHitArea.strokeColor = UIColor.clear
+        jumpButtonHitArea.zPosition = 20
+        
+        
+        addChild(jumpButton)
+        addChild(jumpButtonHitArea)
+    }
+    
+    func setShootButton() {
+        shootButton = SKSpriteNode(imageNamed: "ShootButton")
+        shootButton.position = CGPoint(x: frame.width * 0.9, y: frame.height * 0.075)
+        shootButton.setScale(2.0)
+        shootButton.zPosition = 15
+        
+        let shootButtonHitArea = SKShapeNode(rectOf: CGSize(width: 200, height: 300))
+        shootButtonHitArea.position = shootButton.position
+        shootButtonHitArea.name = "shootButton"
+        shootButtonHitArea.fillColor = UIColor.clear
+        shootButtonHitArea.strokeColor = UIColor.clear
+        shootButtonHitArea.zPosition = 20
+        
+        addChild(shootButton)
+        addChild(shootButtonHitArea)
+    }
+    
     func startGame() {
         hasStarted = true
         startLabel.isHidden = true
         movePlayer(groundHeight: background.groundHeight)
         createScore()
+        setJumpButton()
+        setShootButton()
         ElfiorRunningAnimation()
         
         
@@ -206,6 +251,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }))
     }
     
+    
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
         scoreLabel.text = "SCORE: 0"
@@ -216,7 +262,8 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
     }
     
-   
+    
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         switch gameState {
         case .showingLogo:
@@ -224,14 +271,28 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             startLabel.removeFromParent()
             startGame()
         case .playing:
-            let shootArrowAction = SKAction.run {
-                if (elfior.position.y < self.background.groundHeight / 3.5 && !self.isShooting) {
-                    self.addChild(shootArrow(scene: self, touches))
-                    self.isShooting = true
-                    self.attackDelay = 0
+            let location = touches.first!.location(in: self)
+            let touchedNode = atPoint(location)
+            if touchedNode.name == "jumpButton" {
+                if (elfior.position.y < background.groundHeight / 3.5) {
+                    
+                    //                  check that there's no jump action running
+                    run(SKAction.playSoundFileNamed("MarioJumpSound", waitForCompletion: false))
+                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
+                    
                 }
             }
-            run(shootArrowAction)
+            else if (touchedNode.name == "shootButton") {
+                let shootArrowAction = SKAction.run {
+                    if (elfior.position.y < self.background.groundHeight / 3.5 && !self.isShooting) {
+                        self.addChild(shootArrow(scene: self, touches))
+                        self.isShooting = true
+                        self.attackDelay = 0
+                        self.run(SKAction.playSoundFileNamed("ArrowSound", waitForCompletion: false))
+                    }
+                }
+                run(shootArrowAction)
+            }
         case .dead:
             if let scene = SceneModel(fileNamed: "SceneModel") {
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
@@ -269,37 +330,49 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }
         
         func playerGotHit(enemy: SKSpriteNode) {
-            enemy.removeFromParent()
+            ElfiorHitAnimation()
             playerLives -= 1
+            print("si\(playerLives)")
             if (playerLives < 1) {
                 if let scene = SceneModel(fileNamed: "Scene") {
                     let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
                     view?.presentScene(scene, transition: transition)
                 }
+                //                if let scene = SceneModel(fileNamed: "SceneModel") {
+                //                    let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
+                //                    view?.presentScene(scene, transition: transition)
+                //                }
+                self.removeAllChildren()
+                self.removeAllActions()
+                self.scene?.removeFromParent()
+                self.isPaused = true
+                isInvuln = true
+                ElfiorRunningAnimation()
+                
             }
-            isInvuln = true
         }
     }
-    
-    override func update(_ currentTime: TimeInterval) {
-        if hasStarted {
-            moveGround()
-            moveHills()
-        }
         
-        if attackDelay == 0 {
-            attackDelay = currentTime
-        }
-        if currentTime - attackDelay > 1 {
-            isShooting = false
-        }
-        
-        if (isInvuln == true) {
-            invulnTime += 0.1
-        }
-        if (invulnTime > 10) {
-            isInvuln = false
-            invulnTime = 0
+        override func update(_ currentTime: TimeInterval) {
+            if hasStarted {
+                moveGround()
+                moveHills()
+            }
+            
+            if attackDelay == 0 {
+                attackDelay = currentTime
+            }
+            if currentTime - attackDelay > 1 {
+                isShooting = false
+            }
+            
+            if (isInvuln == true) {
+                invulnTime += 0.1
+            }
+            if (invulnTime > 10) {
+                isInvuln = false
+                invulnTime = 0
+            }
         }
     }
-}
+

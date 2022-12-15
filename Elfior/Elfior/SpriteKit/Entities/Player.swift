@@ -71,7 +71,7 @@ func ElfiorRunningAnimation() {
     var playerAtlas: SKTextureAtlas {
         return SKTextureAtlas(named: "ElfiorRunning")
     }
-    var playerIdleTextures: [SKTexture] {
+    var playerRunningTextures: [SKTexture] {
         return [
             playerAtlas.textureNamed("ElfiorRunning1"),
             playerAtlas.textureNamed("ElfiorRunning2"),
@@ -83,11 +83,30 @@ func ElfiorRunningAnimation() {
             playerAtlas.textureNamed("ElfiorRunning8")
         ]
     }
-    let runningAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.1)
+    let runningAnimation = SKAction.animate(with: playerRunningTextures, timePerFrame: 0.1)
     
-    elfior.run(SKAction.repeatForever(runningAnimation), withKey: "ElfiorIdleAnimation")
+    elfior.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.repeatForever(runningAnimation)]), withKey: "ElfiorIdleAnimation")
 }
 
+func ElfiorHitAnimation() {
+    var playerAtlas: SKTextureAtlas {
+        return SKTextureAtlas(named: "ElfiorHit")
+    }
+    var playerHitTextures: [SKTexture] {
+        return [
+            playerAtlas.textureNamed("ElfiorHit1"),
+            playerAtlas.textureNamed("ElfiorHit2"),
+            playerAtlas.textureNamed("ElfiorHit3"),
+            playerAtlas.textureNamed("ElfiorHit4"),
+            playerAtlas.textureNamed("ElfiorHit5"),
+            playerAtlas.textureNamed("ElfiorHit6"),
+            playerAtlas.textureNamed("ElfiorHit7")
+        ]
+    }
+    let hitAnimation = SKAction.animate(with: playerHitTextures, timePerFrame: 0.1)
+    
+    elfior.run(hitAnimation, withKey: "ElfiorIdleAnimation")
+}
 func movePlayer(groundHeight: CGFloat) {
     elfior.run(SKAction.moveBy(x: -100, y: 0, duration: 3.0))
     elfior.physicsBody?.isDynamic = true
