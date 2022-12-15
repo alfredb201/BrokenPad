@@ -9,7 +9,6 @@ import SpriteKit
 
 /* enumerator that contains the ids of the hitboxes and that will be used to
  handle the different cases of collision with entities */
-
 enum PhysicsCategory: UInt32 {
     case nothing = 0b0 // 0
     case ground = 0b1 // 1
@@ -75,11 +74,11 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             switch sender.direction {
             case .up:
                 if (elfior.action(forKey: "jump") == nil) {
-//                  check that there's no jump action running
-//                  let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
-//                  let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
-//
-//                  player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
+                    //                  check that there's no jump action running
+                    //                  let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
+                    //                  let fallBack = SKAction.moveBy(x: -10, y: -50, duration: 1)
+                    //
+                    //                  player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
                     elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
                 }
             default:
@@ -107,7 +106,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             addChild(tree)
         }
     }
-
+    
     func setStartLabel() {
         startLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
         startLabel.text = "Tap to begin"
@@ -182,37 +181,25 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ]))
     }
     
-//    func moveHills() {
-//        var i = 0
-//            enumerateChildNodes(withName: "hill") { node, error in
-////            let moveAction = SKAction.move(
-////                to: CGPoint(x: -(node.frame.width), y: self.background.groundHeight / 2.5),
-////                duration: 10)
-//            let distance: CGFloat = node.frame.size.width + node.frame.size.width * CGFloat(i)
-//                print("distance: \(distance)")
-//            let duration = TimeInterval(distance / 100)
-//                print("duration: \(duration)")
-//            let hillX = self.frame.size.width + node.frame.size.height / 2 +  CGFloat(i) * node.frame.size.height
-//
-//            let moveAction = SKAction.moveTo(x: -hillX,duration: duration)
-//                let moveActionDone = SKAction.move(to: CGPoint(x: self.frame.size.width + node.frame.size.width, y: self.background.groundHeight / 2.5), duration: 0)
-//
-//            node.run(SKAction.repeatForever(SKAction.sequence([moveAction, moveActionDone])))
-//            i += 1
-//        }
-//    }
-
+    func moveGround() {
+        enumerateChildNodes(withName: "ground", using: ({
+            (node, error) in
+            node.position.x -= 1
+            if node.position.x < -node.frame.width / 2 {
+                node.position.x += node.frame.width * 2
+            }
+        }))
+    }
+    
     func moveHills() {
-            enumerateChildNodes(withName: "hill", using: ({
-                (node, error) in
-                node.position.x -= 1.5
-
-                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
-                if node.position.x < -self.size.width {
-                    node.position = CGPoint(x: self.size.width + node.frame.width / 1.35, y: self.background.groundHeight / 2.5)
-                }
-            }))
-        }
+        enumerateChildNodes(withName: "hill", using: ({
+            (node, error) in
+            node.position.x -= 1
+            if node.position.x < -node.frame.width / 2 {
+                node.position.x += node.frame.width * 2
+            }
+        }))
+    }
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
@@ -283,6 +270,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         if hasStarted {
+            moveGround()
             moveHills()
         }
         if (isInvuln == true) {

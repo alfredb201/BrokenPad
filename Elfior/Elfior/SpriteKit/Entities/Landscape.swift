@@ -13,7 +13,8 @@ class Landscape {
     var cloudElements: [SKSpriteNode] = []
     var treeElements: [SKSpriteNode] = []
     var hillElements: [SKSpriteNode] = []
-
+    
+//    let ground = Ground()
     
     var village: SKSpriteNode!
     var firepit: SKSpriteNode!
@@ -47,7 +48,7 @@ class Landscape {
     }
     
     func createGround() -> [SKSpriteNode] {
-        for i in 0...1{
+        for i in 0...1 {
             let ground = SKSpriteNode(texture: SKTexture(imageNamed: "GameGround"))
             ground.name = "ground"
             ground.position = CGPoint(
@@ -65,45 +66,6 @@ class Landscape {
         }
         return groundElements
     }
-//
-//    func createMovingGround(scene: SceneModel) -> SKSpriteNode {
-//        let ground = SKSpriteNode(texture: SKTexture(imageNamed: "GameGround"))
-//        ground.position = CGPoint(
-//            x: 0,
-//            y: 0
-//        )
-//        ground.setScale(1/3)
-//        ground.zPosition = 0
-//
-//        ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
-//        ground.physicsBody?.categoryBitMask = PhysicsCategory.ground.rawValue
-//        ground.physicsBody?.isDynamic = false
-//
-//        let moveLeft = SKAction.move(to: CGPoint(x: -ground.size.width, y: ground.position.y), duration: 10)
-//        let moveReset = SKAction.removeFromParent()
-//        let moveLoop = SKAction.sequence([moveLeft, moveReset])
-//        ground.run(moveLoop)
-//
-//        return ground
-//    }
-    
-//    func startGround() {
-//        for groundElement in groundElements {
-//            let moveLeft = SKAction.move(
-//                to: CGPoint(x: -groundElement.size.width, y: groundElement.position.y),
-//                duration: 10
-//            )
-//            let moveReset = SKAction.removeFromParent()
-//            let moveLoop = SKAction.sequence([moveLeft, moveReset])
-//            groundElement.run(moveLoop)
-//        }
-//    }
-    
-//    func stopGround() {
-//        for groundElement in groundElements {
-//            groundElement.removeAllActions()
-//        }
-//    }
     
     func createFirepit() -> SKSpriteNode {
         firepit = SKSpriteNode(texture: SKTexture(imageNamed: "Firepit"))
@@ -198,17 +160,15 @@ class Landscape {
     
     func addHill(scene: SceneModel) -> [SKSpriteNode] {
         for i in 0...1 {
-            let hillTexture = SKTexture(imageNamed: "Hills")
-            let hill = SKSpriteNode(texture: hillTexture)
+            let hill = SKSpriteNode(texture: SKTexture(imageNamed: "Hills"))
+            hill.name = "hill"
             hill.position = CGPoint(x: hill.size.width / 2 + (hill.size.width * CGFloat(i)), y: groundHeight / 2.5)
             hill.zPosition = -35
-            hill.name = "hill"
+            
             hillElements.append(hill)
         }
-       
         return hillElements
     }
-    
     
     func addTrap(scene: SceneModel) -> SKSpriteNode {
         let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Trap"))
