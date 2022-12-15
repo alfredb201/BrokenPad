@@ -71,6 +71,7 @@ func arrowCollidesWithEnemy(arrow: SKSpriteNode, enemy: SKSpriteNode) -> Bool {
     }
     else if (enemy.name == "armoredOgre") {
         enemy.name = "ogre"
+        ogreWalkAnimation(enemy: enemy)
         arrow.removeFromParent()
         
         return true

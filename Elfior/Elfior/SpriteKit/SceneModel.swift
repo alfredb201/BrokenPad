@@ -57,6 +57,8 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }
     }
     var timeGroundSpawn = 1.0
+    var isShooting: Bool = false
+    var attackDelay: TimeInterval = 0
     
     override func didMove(to view: SKView) {
         physicsWorld.gravity = CGVectorMake(0.0, -9.8)
@@ -73,6 +75,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         if (sender.state == .ended) {
             switch sender.direction {
             case .up:
+<<<<<<< Updated upstream
                 if (elfior.action(forKey: "jump") == nil) {
                     //                  check that there's no jump action running
                     //                  let jumpUp = SKAction.moveBy(x: 10, y: 50, duration: 1)
@@ -80,6 +83,11 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                     //
                     //                  player.run(SKAction.sequence([jumpUp, fallBack]), withKey:"jump")
                     elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
+=======
+                if (elfior.position.y < background.groundHeight / 3.5) {
+//                  check that there's no jump action running
+                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
+>>>>>>> Stashed changes
                 }
             default:
                 break
@@ -94,8 +102,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(background.createSky(scene: self))
         addChild(background.createVillage(scene: self))
         addChild(createPlayer(scene: self, groundHeight: background.groundHeight))
+        ElfiorIdleAnimation()
         addChild(background.createFirepit())
-        
+        addChild(background.createMoon(scene: self))
         for hill in background.addHill(scene: self) {
             addChild(hill)
         }
@@ -124,11 +133,18 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         
         
         for node in background.backgroundElements {
-            let time = node.name == "ground" ? node.position.x / 100 : node.position.x / 100
-            let isVillage = node.name == "village"
+            var time: Int = 0
+            switch (node.name) {
+            case "village":
+                time = 7
+            case "firepit":
+                time = 5
+            default:
+                time = Int(node.position.x / 80)
+            }
             let moveAction = SKAction.move(
                 to: CGPoint(x: -node.frame.width, y: node.position.y),
-                duration: isVillage ? 7 : time
+                duration: TimeInterval(time)
             )
             node.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
         }
@@ -149,19 +165,19 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }
         
         let trapSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...10))),
+            SKAction.wait(forDuration: TimeInterval(Double.random(in: 10...15))),
             SKAction.run {
                 self.addChild(self.background.addTrap(scene: self))
             }
         ])
         let enemySpawn = SKAction.sequence([
             enemyCreate,
-            SKAction.wait(forDuration: 4),
+            SKAction.wait(forDuration: TimeInterval(Int.random(in:5...7))),
             enemyCreate,
-            SKAction.wait(forDuration: 4)
+            SKAction.wait(forDuration: TimeInterval(Int.random(in:5...7)))
         ])
         let treeSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 5...15))),
+            SKAction.wait(forDuration: TimeInterval(Double.random(in: 3...12))),
             SKAction.run {
                 self.addChild(self.background.createSingleTree(
                     scene: self,
@@ -181,6 +197,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ]))
     }
     
+<<<<<<< Updated upstream
     func moveGround() {
         enumerateChildNodes(withName: "ground", using: ({
             (node, error) in
@@ -200,6 +217,19 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             }
         }))
     }
+=======
+
+    func moveHills() {
+            enumerateChildNodes(withName: "hill", using: ({
+                (node, error) in
+                node.position.x -= 1.5
+                // when a ground block goes on the left of the screen, put it back on the right at the end of the sequence of blocks
+                if node.position.x < -self.size.width {
+                    node.position.x = self.size.width + node.frame.width / 1.35
+                }
+            }))
+        }
+>>>>>>> Stashed changes
     
     func createScore() {
         scoreLabel = SKLabelNode(fontNamed: "Optima-ExtraBlack")
@@ -211,6 +241,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
     }
     
+   
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         switch gameState {
         case .showingLogo:
@@ -218,7 +249,14 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             startLabel.removeFromParent()
             startGame()
         case .playing:
-            addChild(shootArrow(scene: self, touches))
+            let shootArrowAction = SKAction.run {
+                if (elfior.position.y < self.background.groundHeight / 3.5 && !self.isShooting) {
+                    self.addChild(shootArrow(scene: self, touches))
+                    self.isShooting = true
+                    self.attackDelay = 0
+                }
+            }
+            run(shootArrowAction)
         case .dead:
             if let scene = SceneModel(fileNamed: "SceneModel") {
                 let transition = SKTransition.moveIn(with: SKTransitionDirection.right, duration: 1)
@@ -273,6 +311,14 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             moveGround()
             moveHills()
         }
+        
+        if attackDelay == 0 {
+            attackDelay = currentTime
+        }
+        if currentTime - attackDelay > 1 {
+            isShooting = false
+        }
+        
         if (isInvuln == true) {
             invulnTime += 0.1
         }

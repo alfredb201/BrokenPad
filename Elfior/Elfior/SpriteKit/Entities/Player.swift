@@ -11,18 +11,19 @@ var elfior: SKSpriteNode!
 
 func createPlayer(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     elfior = SKSpriteNode(texture: SKTexture(imageNamed: "ElfiorIdle1"))
-    elfior.position = CGPoint(x: scene.frame.width / 3 - 30, y: groundHeight / 3.5)
+    elfior.position = CGPoint(x: scene.frame.width / 3 - 30, y: groundHeight / 4.3)
     elfior.zPosition = 10
     
     elfior.physicsBody = SKPhysicsBody(
         texture: elfior.texture!,
-        size: CGSize(width: elfior.texture!.size().width / 2, height: elfior.texture!.size().height / 2)
+        size: CGSize(width: elfior.texture!.size().width, height: elfior.texture!.size().height)
     )
     elfior.physicsBody?.categoryBitMask = PhysicsCategory.player.rawValue
     elfior.physicsBody?.contactTestBitMask = PhysicsCategory.enemy.rawValue
     elfior.physicsBody?.collisionBitMask = PhysicsCategory.ground.rawValue
     elfior.physicsBody?.allowsRotation = false
     elfior.physicsBody?.isDynamic = false
+    elfior.physicsBody?.restitution = 0.0
     
     return elfior
 }
@@ -58,10 +59,7 @@ func ElfiorIdleAnimation() {
             playerAtlas.textureNamed("ElfiorIdle2"),
             playerAtlas.textureNamed("ElfiorIdle3"),
             playerAtlas.textureNamed("ElfiorIdle4"),
-            playerAtlas.textureNamed("ElfiorIdle5"),
-            playerAtlas.textureNamed("ElfiorIdle6"),
-            playerAtlas.textureNamed("ElfiorIdle7"),
-            playerAtlas.textureNamed("ElfiorIdle8")
+            playerAtlas.textureNamed("ElfiorIdle5")
         ]
     }
     let idleAnimation = SKAction.animate(with: playerIdleTextures, timePerFrame: 0.3)
@@ -91,6 +89,6 @@ func ElfiorRunningAnimation() {
 }
 
 func movePlayer(groundHeight: CGFloat) {
-    elfior.run(SKAction.move(to: CGPoint(x: 150, y: groundHeight / 2.7), duration: 3.0))
+    elfior.run(SKAction.moveBy(x: -100, y: 0, duration: 3.0))
     elfior.physicsBody?.isDynamic = true
 }

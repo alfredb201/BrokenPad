@@ -20,16 +20,14 @@ class Landscape {
     var firepit: SKSpriteNode!
     var sky: SKSpriteNode!
     var HUD: SKSpriteNode!
-    
+    var moon: SKSpriteNode!
+
     var groundHeight: CGFloat = 0.0
     let numberOfClouds = Int.random(in: 7...12)
     var firstHill : SKSpriteNode!
     
     func createSky(scene: SceneModel) -> SKSpriteNode {
-        let sky = SKSpriteNode(
-            color: UIColor(red: 99/255, green: 167/255, blue: 241/255, alpha: 1),
-            size: CGSize(width: scene.frame.width, height: scene.frame.height)
-        )
+        let sky = SKSpriteNode(texture: SKTexture(imageNamed: "Sky"))
         sky.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sky.position = CGPoint(x: scene.frame.midX, y: scene.frame.midY)
         sky.zPosition = -40
@@ -57,8 +55,10 @@ class Landscape {
             )
             ground.zPosition = 0
             
-            ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: ground.texture!.size())
+            ground.physicsBody = SKPhysicsBody(texture: ground.texture!, size: CGSize(width: ground.texture!.size().width, height: ground.texture!.size().height))
             ground.physicsBody?.categoryBitMask = PhysicsCategory.ground.rawValue
+            ground.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
+            ground.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
             ground.physicsBody?.isDynamic = false
             
             groundElements.append(ground)
@@ -71,7 +71,7 @@ class Landscape {
         firepit = SKSpriteNode(texture: SKTexture(imageNamed: "Firepit"))
         firepit.position = CGPoint(x: elfior.position.x / 2.5, y: groundHeight / 2)
         firepit.zPosition = -15
-        
+        firepit.name = "firepit"
         backgroundElements.append(firepit)
         
         return firepit
@@ -137,6 +137,7 @@ class Landscape {
             let tree = SKSpriteNode(texture: treePosition % 2 == 1 ? SKTexture(imageNamed: "Tree") : SKTexture(imageNamed: "Tree2"))
             tree.position = CGPoint(x: scene.frame.width + 200, y: treePosition % 2 == 1 ? groundHeight / 2.1 : groundHeight / 2.8 )
             tree.zPosition = -30
+            tree.setScale(CGFloat.random(in: 1.0...1.5))
             
             let moveLeft = SKAction.move(
                 to: CGPoint(x: -tree.size.width, y: tree.position.y),
@@ -153,9 +154,16 @@ class Landscape {
     func createHUD(scene: SceneModel) -> SKSpriteNode {
         HUD = SKSpriteNode(texture: SKTexture(imageNamed: "HUD3"))
         HUD.size = CGSize(width: HUD.size.width / 3, height: HUD.size.height / 3)
-        HUD.position = CGPoint(x: HUD.size.width / 1.5, y: scene.frame.height)
+        HUD.position = CGPoint(x: HUD.size.width / 1.5, y: scene.frame.height - 25)
         
         return HUD
+    }
+    
+    func createMoon(scene: SceneModel) -> SKSpriteNode {
+        moon = SKSpriteNode(texture: SKTexture(imageNamed: "Moon"))
+        moon.position = CGPoint(x: scene.size.width * 0.5, y: scene.size.height * 0.5)
+        
+        return moon
     }
     
     func addHill(scene: SceneModel) -> [SKSpriteNode] {
@@ -171,26 +179,26 @@ class Landscape {
     }
     
     func addTrap(scene: SceneModel) -> SKSpriteNode {
-        let hole = SKSpriteNode(texture: SKTexture(imageNamed: "Trap"))
-        hole.position = CGPoint(x: scene.size.width + hole.size.width / 2, y: groundHeight / 3.8)
-        hole.zPosition = 10
+        let trap = SKSpriteNode(texture: SKTexture(imageNamed: "Trap"))
+        trap.position = CGPoint(x: scene.size.width + trap.size.width / 2, y: groundHeight / 3.7)
+        trap.zPosition = 10
         
-        hole.physicsBody = SKPhysicsBody(
-            texture: hole.texture!,
-            size: CGSize(width: hole.texture!.size().width, height: hole.texture!.size().height)
+        trap.physicsBody = SKPhysicsBody(
+            texture: trap.texture!,
+            size: CGSize(width: trap.texture!.size().width, height: trap.texture!.size().height)
         )
-        hole.physicsBody?.categoryBitMask = PhysicsCategory.trap.rawValue
-        hole.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
-        hole.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
-        hole.physicsBody?.isDynamic = false
+        trap.physicsBody?.categoryBitMask = PhysicsCategory.trap.rawValue
+        trap.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
+        trap.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
+        trap.physicsBody?.isDynamic = false
                 
         let moveAction = SKAction.move(
-            to: CGPoint(x: -hole.size.width/2, y: groundHeight / 3.8),
-            duration: 20
+            to: CGPoint(x: -trap.size.width/2, y: groundHeight / 3.8),
+            duration: 5
         )
         let moveActionDone = SKAction.removeFromParent()
-        hole.run(SKAction.sequence([moveAction, moveActionDone]))
+        trap.run(SKAction.sequence([moveAction, moveActionDone]))
         
-        return hole
+        return trap
     }
 }
