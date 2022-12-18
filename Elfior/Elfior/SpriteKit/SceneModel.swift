@@ -48,7 +48,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     var gameState = GameState.showingLogo
     var playerLives: Int = 3 {
         didSet {
-            if (playerLives > 0) {
+            if (playerLives >= 0) {
                 background.HUD.texture = SKTexture(imageNamed: "HUD\(playerLives)")
             }
         }
@@ -67,10 +67,10 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
     let backgroundSound = SKAudioNode(fileNamed: "ElfiorTheme.wav")
     let arrowSound: SKAudioNode = SKAudioNode(fileNamed: "ArrowSound.mp3")
     let jumpSound: SKAudioNode = SKAudioNode(fileNamed: "MarioJumpSound.wav")
-    
+    var spawnSpeed: Int = 7
     
     override func didMove(to view: SKView) {
-        physicsWorld.gravity = CGVectorMake(0.0, -9.8)
+        physicsWorld.gravity = CGVectorMake(0.0, -4)
         physicsWorld.contactDelegate = self
         setStartLabel()
         setGameOver()
@@ -79,22 +79,8 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         
         addChild(backgroundSound)
         
-        //        let upSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender:)))
-        //        upSwipe.direction = .up
-        //        view.addGestureRecognizer(upSwipe)
+       
     }
-    
-    
-    //    @objc func handleSwipe(sender: UISwipeGestureRecognizer) {
-    //        if (sender.state == .ended) {
-    //            switch sender.direction {
-    //            case .up:
-    //
-    //            default:
-    //                break
-    //            }
-    //        }
-    //    }
     
     func createBackground() {
         for ground in background.createGround(){
@@ -205,7 +191,13 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
             )
             node.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
         }
-        
+       
+        enumerateChildNodes(withName: "logo", using: ({
+            (node, error) in
+            let moveLogo = SKAction.moveBy(x: 0, y: 220, duration: 2)
+            node.run(SKAction.sequence([moveLogo, SKAction.removeFromParent()]))
+        }))
+
         addChild(background.createHUD(scene: self))
         
         let enemyCreate = SKAction.run {
@@ -224,7 +216,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         }
         
         let trapSpawn = SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval(Double.random(in: 10...15))),
+            SKAction.wait(forDuration: TimeInterval(spawnSpeed + 2)),
             SKAction.run {
                 let trap = self.background.addTrap(scene: self)
                 self.addChild(trap.0)
@@ -233,10 +225,9 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         ])
         let enemySpawn = SKAction.sequence([
             enemyCreate,
-            SKAction.wait(forDuration: TimeInterval(Int.random(in:5...7))),
-            enemyCreate,
-            SKAction.wait(forDuration: TimeInterval(Int.random(in:5...7)))
+            SKAction.wait(forDuration: TimeInterval(spawnSpeed))
         ])
+
         let treeSpawn = SKAction.sequence([
             SKAction.wait(forDuration: TimeInterval(Double.random(in: 3...6))),
             SKAction.run {
@@ -247,15 +238,15 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 ))
             }
         ])
-        
+        run(SKAction.repeatForever(treeSpawn))
         run(SKAction.sequence([
             SKAction.wait(forDuration: 6),
             SKAction.group([
                 SKAction.repeatForever(enemySpawn),
-                SKAction.repeatForever(treeSpawn),
                 SKAction.repeatForever(trapSpawn)
             ])
         ]))
+        
     }
     
     func moveGround() {
@@ -289,9 +280,7 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
     }
     
-    
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         switch gameState {
         case .showingLogo:
             gameState = .playing
@@ -300,14 +289,20 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
         case .playing:
             let location = touches.first!.location(in: self)
             let touchedNode = atPoint(location)
+            let pauseJump = SKAction.run {
+                elfior.speed = 0
+            }
+            let resumeJump = SKAction.run {
+                elfior.speed = 1
+            }
             if touchedNode.name == "jumpButton" {
                 if (elfior.position.y < background.groundHeight / 3.5) {
                     
-                    //                  check that there's no jump action running
+                    //check that there's no jump action running
                     
                     run(SKAction.playSoundFileNamed("MarioJumpSound", waitForCompletion: false))
-                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 80))
-                    
+                    elfior.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+                    run(SKAction.sequence([pauseJump, SKAction.wait(forDuration: 1.3), resumeJump]))
                 }
             }
             else if (touchedNode.name == "shootButton") {
@@ -331,6 +326,10 @@ class SceneModel: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {

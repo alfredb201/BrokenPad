@@ -23,7 +23,7 @@ func addOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     ogre.position = CGPoint(x: scene.size.width + ogre.size.width / 2, y: groundHeight / 3.5)
     ogre.zPosition = 10
     
-    ogre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ogre.size.width / 2, height: ogre.size.height / 2))
+    ogre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: ogre.size.width / 3, height: ogre.size.height / 1.5))
     ogre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     ogre.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
     ogre.physicsBody?.collisionBitMask = PhysicsCategory.nothing.rawValue
@@ -50,8 +50,8 @@ func addShieldedOgre(scene: SceneModel, groundHeight: CGFloat) -> (SKSpriteNode,
     shieldedOgre.zPosition = 10
     
     shieldedOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(
-        width: shieldedOgre.size.width / 2,
-        height: shieldedOgre.size.height / 2)
+        width: shieldedOgre.size.width / 3,
+        height: shieldedOgre.size.height / 1.5)
     )
     shieldedOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     shieldedOgre.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue
@@ -93,8 +93,8 @@ func addArmoredOgre(scene: SceneModel, groundHeight: CGFloat) -> SKSpriteNode {
     armoredOgre.zPosition = 10
 
     armoredOgre.physicsBody = SKPhysicsBody(rectangleOf: CGSize(
-        width: armoredOgre.size.width / 2,
-        height: armoredOgre.size.height / 2)
+        width: armoredOgre.size.width / 3,
+        height: armoredOgre.size.height / 1.5)
     )
     armoredOgre.physicsBody?.categoryBitMask = PhysicsCategory.enemy.rawValue
     armoredOgre.physicsBody?.contactTestBitMask = PhysicsCategory.player.rawValue

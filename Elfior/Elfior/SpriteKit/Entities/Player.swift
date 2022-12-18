@@ -85,7 +85,7 @@ func ElfiorRunningAnimation() {
     }
     let runningAnimation = SKAction.animate(with: playerRunningTextures, timePerFrame: 0.1)
     
-    elfior.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.repeatForever(runningAnimation)]), withKey: "ElfiorIdleAnimation")
+    elfior.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.repeatForever(runningAnimation)]), withKey: "ElfiorRunningAnimation")
 }
 
 func ElfiorHitAnimation() {
@@ -105,7 +105,7 @@ func ElfiorHitAnimation() {
     }
     let hitAnimation = SKAction.animate(with: playerHitTextures, timePerFrame: 0.1)
     
-    elfior.run(hitAnimation, withKey: "ElfiorIdleAnimation")
+    elfior.run(hitAnimation, withKey: "ElfiorHitAnimation")
 }
 
 func ElfiorDeathAnimation() {

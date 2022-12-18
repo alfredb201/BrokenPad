@@ -136,9 +136,8 @@ class Landscape {
         } else {
             let treePosition = Int.random(in: 0...1)
             let tree = SKSpriteNode(texture: treePosition % 2 == 1 ? SKTexture(imageNamed: "Tree") : SKTexture(imageNamed: "Tree2"))
-            tree.position = CGPoint(x: scene.frame.width + 200, y: treePosition % 2 == 1 ? groundHeight / 2.1 : groundHeight / 2.8 )
+            tree.position = CGPoint(x: scene.frame.width + 100, y: treePosition % 2 == 1 ? groundHeight / 2.1 : groundHeight / 2.8 )
             tree.zPosition = -30
-            tree.setScale(CGFloat.random(in: 1.0...1.5))
             
             let moveLeft = SKAction.move(
                 to: CGPoint(x: -tree.size.width, y: tree.position.y),
@@ -170,8 +169,7 @@ class Landscape {
     func createLogo(scene: SceneModel) -> SKSpriteNode {
         logo = SKSpriteNode(texture: SKTexture(imageNamed: "Gamelogo"))
         logo.position = CGPoint(x: scene.frame.midX, y: scene.frame.midY * 1.5)
-        backgroundElements.append(logo)
-
+        logo.name = "logo"
         return logo
     }
     

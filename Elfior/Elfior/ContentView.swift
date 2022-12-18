@@ -12,13 +12,7 @@ struct ContentView: View {
     var scene = SKScene(fileNamed: "Scene")!
     
     var body: some View {
-        SpriteView(scene: self.scene, debugOptions: [
-            .showsDrawCount,
-            .showsFPS,
-            .showsNodeCount
-                
-            
-        ])
+        SpriteView(scene: self.scene)
         .ignoresSafeArea()
     }
 }
